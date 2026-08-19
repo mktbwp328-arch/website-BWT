@@ -34,7 +34,41 @@
       sessionStorage.setItem(LS_AUTH, "1"); showApp();
     } else toast("รหัสผ่านไม่ถูกต้อง", true);
   }
-  function showApp() { $("#login").style.display = "none"; $("#app").style.display = "block"; build(); }
+  /* ดึงเนื้อหาล่าสุดจากฐานข้อมูลก่อนเสมอ
+     ไม่งั้นถ้าเปิดหลังบ้านจากคนละเครื่อง จะเห็นข้อมูลเก่าในเครื่องนั้น
+     แล้วพอกดบันทึกก็จะเขียนทับงานที่แก้จากหน้าเว็บหรือเครื่องอื่นทิ้งไปทั้งหมด */
+  let dbOk = false;
+  async function pullLatest() {
+    if (!window.BWT_DB) return;
+    try {
+      const row = await window.BWT_DB.fetchContent();
+      dbOk = true;
+      if (!row || !row.content) return;
+      if (row.content.version !== window.BWT_DEFAULT.version) return;  // คนละรุ่นข้อมูล ไม่นำมาใช้
+      D = Object.assign(JSON.parse(JSON.stringify(window.BWT_DEFAULT)), row.content);
+      try {
+        localStorage.setItem(LS_SITE, JSON.stringify(D));
+        if (row.updated_at) localStorage.setItem("bwt_site_stamp", row.updated_at);
+      } catch (e) { try { localStorage.removeItem("bwt_site_stamp"); } catch (e2) { } }
+    } catch (e) {
+      console.warn("ดึงเนื้อหาล่าสุดจากฐานข้อมูลไม่สำเร็จ:", e.message);
+    }
+  }
+
+  async function showApp() {
+    $("#login").style.display = "none";
+    $("#app").style.display = "block";
+    $("#app").insertAdjacentHTML("afterbegin", '<div id="dbNote" class="hint" style="padding:10px 18px">กำลังดึงเนื้อหาล่าสุดจากฐานข้อมูล...</div>');
+    await pullLatest();
+    const note = $("#dbNote");
+    if (note) {
+      if (dbOk) note.remove();
+      else note.outerHTML = '<div id="dbNote" style="margin:12px 18px;padding:12px 16px;border-radius:10px;' +
+        'background:#fdecec;color:#a11;font-size:.88rem">⚠ ต่อฐานข้อมูลไม่ได้ — กำลังแสดงข้อมูลที่เก็บไว้ในเครื่องนี้ ' +
+        'ถ้าบันทึกตอนนี้อาจเขียนทับงานที่แก้จากที่อื่น แนะนำให้รีเฟรชหน้าก่อน</div>';
+    }
+    build();
+  }
   $("#loginBtn").addEventListener("click", tryLogin);
   $("#pw").addEventListener("keydown", e => { if (e.key === "Enter") tryLogin(); });
 
@@ -552,6 +586,11 @@
   $("#saveBtn").addEventListener("click", async () => {
     collect();
     D.version = window.BWT_DEFAULT.version;
+
+    if (!dbOk && !confirm("เปิดหลังบ้านตอนที่ต่อฐานข้อมูลไม่ได้ ข้อมูลที่เห็นอาจไม่ใช่ชุดล่าสุด\n\n" +
+      "ถ้าบันทึกตอนนี้ อาจเขียนทับงานที่แก้จากหน้าเว็บหรือเครื่องอื่น\nแนะนำให้รีเฟรชหน้าก่อน — ยืนยันจะบันทึกเลยไหม?")) {
+      return toast("ยกเลิกการบันทึก — ลองรีเฟรชหน้าแล้วแก้ใหม่", true);
+    }
 
     // ส่งขึ้นฐานข้อมูลก่อน เพื่อให้เว็บจริงเปลี่ยนตามทุกเครื่อง
     if (window.BWT_DB) {

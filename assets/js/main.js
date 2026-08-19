@@ -40,8 +40,15 @@
   }
 
   const S = loadSite();
+  /* สัญญาณบอกว่า "ดึงเนื้อหาล่าสุดจากฐานข้อมูลเสร็จแล้ว"
+     โหมดแก้ไขต้องรอสัญญาณนี้ก่อน ไม่งั้นจะแก้ทับข้อมูลเก่าแล้วเขียนทับงานคนอื่น */
+  let syncDone;
+  const ready = new Promise(res => { syncDone = res; });
+
   window.BWT = {
     data: S,
+    ready,
+    dbOk: false,
     save(obj) { localStorage.setItem(LS_SITE, JSON.stringify(obj)); },
     reset() { localStorage.removeItem(LS_SITE); },
     leads() { try { return JSON.parse(localStorage.getItem(LS_LEADS) || "[]"); } catch (e) { return []; } },
@@ -484,6 +491,7 @@
          ถ้าตรงกับที่เครื่องนี้ใช้อยู่ ก็จบเลย ไม่ต้องโหลดใหม่ ไม่ต้องวาดใหม่
          — นี่คือสาเหตุที่รูปเคยกระพริบเป็นรูปเก่าแวบหนึ่งทุกครั้งที่เปิดหน้า */
       const stamp = await window.BWT_DB.fetchStamp();
+      window.BWT.dbOk = true;   // ติดต่อฐานข้อมูลได้ — ข้อมูลที่ใช้อยู่เชื่อถือได้
       if (stamp && stamp === localStorage.getItem(LS_STAMP) && localStorage.getItem(LS_SITE)) return;
 
       const row = await window.BWT_DB.fetchContent();
@@ -630,7 +638,7 @@
     heroSlider(); confetti(); R.heroText();
     if (typeof window.pageInit === "function") window.pageInit(R, S);
     applyPageText();
-    syncFromDb();
+    syncFromDb().finally(() => syncDone());
     reveals(); counters(); filters(); videoModal(); forms();
   }
 
