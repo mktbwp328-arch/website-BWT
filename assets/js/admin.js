@@ -111,21 +111,19 @@
     },
     hero() {
       const h = D.hero;
-      return head("แบนเนอร์หน้าแรก (Hero)", "ข้อความและภาพสไลด์ที่เคลื่อนไหวบนหน้าแรก") + `
-        <div class="row one">${fld("ป้ายข้อความด้านบน", "hero.badge", h.badge)}</div>
-        <div class="row">${fld("บรรทัดที่ 1 (ขาว)", "hero.l1", h.l1)}${fld("บรรทัดที่ 2 (เหลือง)", "hero.l2", h.l2)}</div>
-        <div class="row">${fld("บรรทัดที่ 3 (ฟ้า)", "hero.l3", h.l3)}${fld("ข้อความรอง", "hero.sub", h.sub)}</div>
-        <div class="row one">${fld("แท็ก (คั่นด้วยจุลภาค ,)", "hero.tags", h.tags.join(", "))}</div>
+      return head("แบนเนอร์หน้าแรก (ปก)", "รูปปก ข้อความ ปุ่ม และริบบิ้นบนหน้าแรก") + `
+        <div class="row one">${fld("รูปพื้นหลังปก", "hero.coverImg", h.coverImg, "img")}</div>
+        <div class="row">${fld("บรรทัดที่ 1 (น้ำเงิน)", "hero.l1", h.l1)}${fld("บรรทัดที่ 2 (เหลือง)", "hero.l2", h.l2)}</div>
+        <div class="row one">${fld("บรรทัดที่ 3 (น้ำเงิน)", "hero.l3", h.l3)}</div>
+        <div class="row">${fld("ข้อความรอง บรรทัดบน", "hero.sub", h.sub)}${fld("ข้อความรอง บรรทัดล่าง", "hero.sub2", h.sub2 || "")}</div>
         <div class="row">${fld("ข้อความปุ่มหลัก", "hero.ctaText", h.ctaText)}${fld("ลิงก์ปุ่มหลัก", "hero.ctaLink", h.ctaLink)}</div>
-        <div class="row one">${fld("ลิงก์วิดีโอแนะนำ (ถ้ามี)", "hero.videoUrl", h.videoUrl)}</div>
-        <h3 style="margin-top:20px;font-size:1rem">ภาพสไลด์ (อัปโหลด หรือกดเลือกรูปภาพได้ทันที)</h3>
-        ${listBlock("hero.slides", "เพิ่มสไลด์", h.slides.map((s, i) => itemBox("hero.slides", i,
-          `<div class="row">${fld("รูปภาพสไลด์", `hero.slides.${i}.img`, s.img, "img")}${fld("พื้นหลังสำรอง (g1/g2/g3)", `hero.slides.${i}.css`, s.css)}</div>`)).join(""))}`;
+        <div class="row">${fld("ข้อความปุ่มวิดีโอ", "hero.videoText", h.videoText || "")}${fld("ลิงก์วิดีโอแนะนำ (ถ้ามี)", "hero.videoUrl", h.videoUrl || "")}</div>
+        <div class="row">${fld("ริบบิ้นเหลือง (บน)", "hero.ribbonTop", h.ribbonTop || "")}${fld("ริบบิ้นน้ำเงิน (ล่าง)", "hero.ribbonBottom", h.ribbonBottom || "")}</div>`;
     },
     stats() {
       return head("ตัวเลขสถิติ", "แถบตัวเลขใต้แบนเนอร์ (นับขึ้นอัตโนมัติ)") +
         listBlock("stats", "เพิ่มตัวเลข", D.stats.map((s, i) => itemBox("stats", i,
-          `<div class="row">${fld("ไอคอน (อีโมจิ)", `stats.${i}.ico`, s.ico)}${fld("ตัวเลข", `stats.${i}.num`, s.num)}</div>
+          `<div class="row">${fld("ไอคอน (medal / people / shield / award)", `stats.${i}.ico`, s.ico)}${fld("ตัวเลข", `stats.${i}.num`, s.num)}</div>
            <div class="row one">${fld("คำอธิบาย (อังกฤษ)", `stats.${i}.label`, s.label)}</div>`)).join(""));
     },
     services() {
@@ -257,7 +255,18 @@
     $("#side").innerHTML = TABS.map(([k, l]) => `<button data-tab="${k}" class="${k === current ? "on" : ""}">${l}</button>`).join("");
     TABS.forEach(([k]) => {
       const el = $("#p-" + k); if (!el) return;
-      el.innerHTML = P[k] ? P[k]() : "";
+      // แยก try/catch รายแท็บ — ถ้าแท็บใดพัง แท็บอื่นต้องยังใช้งานได้ตามปกติ
+      try {
+        el.innerHTML = P[k] ? P[k]() : "";
+      } catch (err) {
+        console.error("แผง '" + k + "' มีปัญหา:", err);
+        el.innerHTML = `<h2>เกิดข้อผิดพลาดในแท็บนี้</h2>
+          <p class="hint">ข้อมูลบางส่วนอาจไม่ตรงกับรุ่นปัจจุบัน — แท็บอื่นยังใช้งานได้ตามปกติ</p>
+          <div class="item"><b>รายละเอียด</b>
+            <p style="color:var(--muted);font-size:.86rem;margin:6px 0 0">${esc(err.message)}</p></div>
+          <p class="hint" style="margin-top:14px">วิธีแก้: กด “↺ คืนค่าเริ่มต้น” ด้านบน
+            (จะล้างเฉพาะข้อมูลที่ค้างในเบราว์เซอร์ ไม่กระทบเนื้อหาบนเว็บจริง)</p>`;
+      }
       el.classList.toggle("on", k === current);
     });
     /* ปุ่มต่างๆ ในแผงถูกดักจับด้วย event delegation ที่ระดับ document (ผูกครั้งเดียว)
@@ -280,7 +289,7 @@
     document.querySelectorAll("[data-path]").forEach(inp => {
       const p = inp.dataset.path; if (p.startsWith("__")) return;
       let v = inp.value;
-      if (p === "company.phones" || p === "hero.tags") v = v.split(",").map(s => s.trim()).filter(Boolean);
+      if (p === "company.phones") v = v.split(",").map(s => s.trim()).filter(Boolean);
       if (p === "about.points" || p === "intro.bullets") v = v.split("\n").map(s => s.trim()).filter(Boolean);
       setPath(D, p, v);
     });
