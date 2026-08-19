@@ -222,7 +222,7 @@
     im.src = url;
   }
 
-  function pickImage(currentPath, cb) {
+  function pickImage(currentPath, cb, aspect) {
     const inp = document.createElement("input");
     inp.type = "file";
     inp.accept = "image/*";
@@ -232,13 +232,23 @@
       const f = inp.files[0];
       inp.remove();
       if (!f) return;
-      status("กำลังอัปโหลดรูป...", false);
-      shrink(f, 1600, (dataUrl, w, h, kb) => {
+
+      const apply = (dataUrl, w, h, kb) => {
         cb(dataUrl);
         status(`✓ เปลี่ยนรูปแล้ว (${w}×${h}, ${kb} KB) — อย่าลืมกดบันทึก`, true);
-      });
+      };
+
+      // เปิดหน้าต่างครอปก่อน โดยตั้งกรอบตามสัดส่วนช่องที่รูปจะไปวางจริง
+      if (window.BWT_CROP) window.BWT_CROP.open(f, { aspect: aspect || 0, maxW: 1600 }, apply);
+      else { status("กำลังอัปโหลดรูป...", false); shrink(f, 1600, apply); }
     };
     inp.click();
+  }
+
+  /* สัดส่วนของช่องที่รูปวางอยู่จริงบนหน้าเว็บ — ครอปแล้วได้พอดีไม่โดนตัด */
+  function boxAspect(el) {
+    const r = el.getBoundingClientRect();
+    return (r.width > 20 && r.height > 20) ? r.width / r.height : 0;
   }
 
   /* คลิกขวาที่รูป = พิมพ์ที่อยู่ไฟล์เอง (สำหรับรูปที่วางไว้ในโฟลเดอร์แล้ว) */
@@ -251,7 +261,7 @@
     if (el.dataset.edWired) return;
     el.dataset.edWired = "1";
     el.classList.add("ed-img");
-    el.title = "คลิกเพื่ออัปโหลดรูปใหม่  (คลิกขวา = พิมพ์ที่อยู่ไฟล์เอง)";
+    el.title = "คลิกเพื่ออัปโหลดรูปใหม่ แล้วเลือกครอป  (คลิกขวา = พิมพ์ที่อยู่ไฟล์เอง)";
 
     // ป้ายบอกให้กดอัปโหลด
     const wrap = el.parentElement;
@@ -266,7 +276,7 @@
     const change = v => { apply(v); setPath(D, path, v); markDirty(); };
     el.addEventListener("click", e => {
       e.preventDefault(); e.stopPropagation();
-      pickImage(getPath(D, path), change);
+      pickImage(getPath(D, path), change, boxAspect(el));
     }, true);
     el.addEventListener("contextmenu", e => {
       e.preventDefault(); e.stopPropagation();

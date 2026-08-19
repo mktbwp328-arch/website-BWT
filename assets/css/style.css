@@ -854,3 +854,41 @@ body.ed-on .port:hover img{transform:none}
 .modal.on{display:grid}
 .modal .box{background:#000;border-radius:18px;overflow:hidden;width:min(900px,100%);aspect-ratio:16/9;position:relative;display:grid;place-items:center;color:#fff;text-align:center;padding:24px}
 .modal .close{position:absolute;top:-44px;right:0;color:#fff;font-size:1.6rem;background:none}
+
+/* ---------- หน้าต่างครอปรูป (cropper.js) ---------- */
+.cr-mask{position:fixed;inset:0;z-index:100000;background:rgba(3,15,45,.86);display:grid;place-items:center;padding:16px}
+.cr-card{background:#fff;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.45);width:min(940px,100%);max-height:94vh;overflow:auto;padding:18px}
+.cr-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.cr-head b{color:var(--blue-deep);font-size:1.05rem}
+.cr-hint{color:var(--muted);font-size:.83rem}
+.cr-ratios{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.cr-ratios button{border:1px solid var(--line);background:#f6f8fc;color:var(--ink);border-radius:999px;padding:7px 15px;font-size:.83rem;font-family:inherit;cursor:pointer;transition:.18s}
+.cr-ratios button:hover{border-color:var(--blue)}
+.cr-ratios button.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.cr-stage{position:relative;display:inline-block;line-height:0;max-width:100%;background:#0d1b3a;border-radius:10px;overflow:hidden;touch-action:none;user-select:none}
+.cr-stage img{display:block;max-width:100%;max-height:56vh;width:auto;height:auto;pointer-events:none}
+.cr-box{position:absolute;box-shadow:0 0 0 9999px rgba(3,15,45,.55);border:2px solid var(--yellow);cursor:move;box-sizing:border-box}
+.cr-box::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to right,transparent 33.33%,rgba(255,255,255,.35) 33.33%,rgba(255,255,255,.35) calc(33.33% + 1px),transparent calc(33.33% + 1px),transparent 66.66%,rgba(255,255,255,.35) 66.66%,rgba(255,255,255,.35) calc(66.66% + 1px),transparent calc(66.66% + 1px)),
+             linear-gradient(to bottom,transparent 33.33%,rgba(255,255,255,.35) 33.33%,rgba(255,255,255,.35) calc(33.33% + 1px),transparent calc(33.33% + 1px),transparent 66.66%,rgba(255,255,255,.35) 66.66%,rgba(255,255,255,.35) calc(66.66% + 1px),transparent calc(66.66% + 1px))}
+.cr-h{position:absolute;width:16px;height:16px;background:var(--yellow);border:2px solid #fff;border-radius:4px;box-sizing:border-box}
+.cr-nw{left:-9px;top:-9px;cursor:nwse-resize}
+.cr-ne{right:-9px;top:-9px;cursor:nesw-resize}
+.cr-sw{left:-9px;bottom:-9px;cursor:nesw-resize}
+.cr-se{right:-9px;bottom:-9px;cursor:nwse-resize}
+.cr-n{left:50%;top:-9px;margin-left:-8px;cursor:ns-resize}
+.cr-s{left:50%;bottom:-9px;margin-left:-8px;cursor:ns-resize}
+.cr-w{left:-9px;top:50%;margin-top:-8px;cursor:ew-resize}
+.cr-e{right:-9px;top:50%;margin-top:-8px;cursor:ew-resize}
+.cr-foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.cr-size{color:var(--muted);font-size:.83rem}
+.cr-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:9px 18px;font-family:inherit;font-size:.88rem;cursor:pointer;transition:.18s}
+.cr-btn:hover{border-color:var(--blue)}
+.cr-btn.cr-ok{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.cr-btn.cr-ok:hover{background:var(--blue-deep)}
+@media(max-width:640px){
+  .cr-card{padding:14px}
+  .cr-hint{display:none}
+  .cr-stage img{max-height:44vh}
+  .cr-foot .cr-btn{flex:1}
+}

@@ -58,14 +58,28 @@
     ["assets/img/scene-csr.svg", "🌱 กิจกรรม CSR"]
   ];
 
+  /* สัดส่วนที่กรอบครอปจะตั้งไว้ให้ตั้งแต่แรก ตามตำแหน่งที่รูปจะไปแสดงจริง
+     (ผู้ใช้เปลี่ยนเป็นสัดส่วนอื่นหรือครอปอิสระได้ในหน้าต่างครอป) */
+  function aspectFor(path) {
+    if (path.startsWith("hero.")) return 16 / 9;
+    if (path.startsWith("blog.")) return 16 / 9;
+    if (path.startsWith("services.")) return 4 / 3;
+    if (path.startsWith("portfolio.")) return 1;
+    if (path.startsWith("clients.")) return 0;          // โลโก้ — ครอปอิสระ
+    if (path.startsWith("expertise.")) return 4 / 3;
+    if (path.startsWith("intro.gallery")) return 4 / 3;
+    return 0;
+  }
+
   function imgFld(label, path, value) {
+    const ar = aspectFor(path);
     const presets = PRESET_IMAGES.map(([url, name]) => `<option value="${url}">${name}</option>`).join("");
     return `<div class="field" style="grid-column:1/-1;background:#fff;padding:14px;border:1px dashed var(--blue);border-radius:12px">
       <label style="font-weight:700;color:var(--blue)">🖼️ ${label}</label>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px">
         <input data-path="${path}" id="inp_${path.replace(/\./g, '_')}" type="text" value="${esc(value)}" style="flex:1;min-width:240px" placeholder="วางลิงก์รูปภาพ หรือเลือกจากไฟล์เครื่อง">
         <label class="addbtn" style="cursor:pointer;margin:0;padding:8px 16px;background:var(--blue);color:#fff;font-size:0.85rem">
-          📁 เลือกรูปจากคอม... <input type="file" accept="image/*" class="img-file-up" data-target="inp_${path.replace(/\./g, '_')}" style="display:none">
+          📁 เลือกรูป + ครอป... <input type="file" accept="image/*" class="img-file-up" data-ar="${ar}" data-target="inp_${path.replace(/\./g, '_')}" style="display:none">
         </label>
         <select class="img-preset-sel" data-target="inp_${path.replace(/\./g, '_')}" style="width:auto;padding:8px 12px;font-size:0.85rem">
           <option value="">-- หรือเลือกรูปตัวอย่าง --</option>
@@ -350,12 +364,17 @@
       const f = e.target.files[0];
       if (!f) return;
       const targetId = e.target.dataset.target;
+      const aspect = +(e.target.dataset.ar || 0);
       e.target.value = "";                       // เลือกไฟล์เดิมซ้ำได้
-      toast("กำลังย่อรูป...");
-      shrink(f, 1600, (dataUrl, w, h, kb) => {
+
+      const apply = (dataUrl, w, h, kb) => {
         if (setImageValue(targetId, dataUrl))
           toast(`เปลี่ยนรูปแล้ว (${w}×${h}, ${kb} KB) — อย่าลืมกด 💾 บันทึกทั้งหมด`);
-      });
+      };
+
+      // เปิดหน้าต่างครอปก่อน ถ้าโหลดเครื่องมือครอปไม่ได้ ค่อยย่อรูปตรงๆ
+      if (window.BWT_CROP) window.BWT_CROP.open(f, { aspect, maxW: 1600 }, apply);
+      else { toast("กำลังย่อรูป..."); shrink(f, 1600, apply); }
     }
     if (e.target.classList.contains("img-preset-sel")) {
       const val = e.target.value;
