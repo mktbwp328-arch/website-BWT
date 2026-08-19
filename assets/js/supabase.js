@@ -78,6 +78,55 @@
     return true;
   }
 
+  /* ---------- อัปโหลดรูปขึ้นคลังรูป (Supabase Storage) ----------
+     เก็บรูปเป็น "ไฟล์" แทนการฝังเป็นข้อความยาวๆ ในเนื้อหา
+     ข้อดี: เนื้อหาเว็บเล็กลงมาก โหลดเร็ว และเบราว์เซอร์เก็บรูปไว้ใช้ซ้ำได้
+     ถ้ายังไม่ได้สร้างถังเก็บรูป ฟังก์ชันนี้จะโยน error ออกไป
+     แล้วระบบจะกลับไปฝังรูปแบบเดิมให้อัตโนมัติ (ใช้งานได้ไม่สะดุด) */
+  const BUCKET = "site-images";
+
+  async function uploadImage(blob, hintName) {
+    const safe = (hintName || "img").replace(/[^a-z0-9]+/gi, "-").slice(0, 40).toLowerCase();
+    const file = `${safe}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
+    const res = await fetch(`${URL}/storage/v1/object/${BUCKET}/${file}`, {
+      method: "POST",
+      headers: {
+        "apikey": KEY,
+        "Authorization": "Bearer " + KEY,
+        "Content-Type": blob.type || "image/jpeg",
+        "x-upsert": "true"
+      },
+      body: blob
+    });
+    if (!res.ok) throw new Error("storage " + res.status + " " + (await res.text()).slice(0, 160));
+    return `${URL}/storage/v1/object/public/${BUCKET}/${file}`;
+  }
+
+  /* ตรวจว่าถังเก็บรูปพร้อมใช้หรือยัง (ใช้ตัดสินใจว่าจะอัปโหลดหรือฝังรูป) */
+  async function storageReady() {
+    try {
+      const res = await fetch(`${URL}/storage/v1/object/list/${BUCKET}`, {
+        method: "POST",
+        headers: headers(),
+        body: JSON.stringify({ prefix: "", limit: 1 })
+      });
+      if (!res.ok) return false;
+      // ถังที่ยังไม่ถูกสร้าง จะตอบ 200 พร้อมข้อความ NoSuchBucket จึงต้องอ่านเนื้อหาด้วย
+      const body = await res.text();
+      return !body.includes("NoSuchBucket") && !body.includes("Bucket not found");
+    } catch (e) { return false; }
+  }
+
+  /* แปลงรูปที่ฝังไว้เป็นไฟล์ (ใช้ตอนย้ายรูปเก่าขึ้นคลัง) */
+  function dataUrlToBlob(dataUrl) {
+    const [head, b64] = dataUrl.split(",");
+    const mime = (head.match(/:(.*?);/) || [])[1] || "image/jpeg";
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
+
   /* ---------- ตรวจว่าเชื่อมต่อได้ไหม ---------- */
   async function ping() {
     try {
@@ -88,5 +137,8 @@
     }
   }
 
-  window.BWT_DB = { url: URL, saveLead, fetchStamp, fetchContent, saveContent, ping };
+  window.BWT_DB = {
+    url: URL, saveLead, fetchStamp, fetchContent, saveContent, ping,
+    uploadImage, storageReady, dataUrlToBlob, BUCKET
+  };
 })();

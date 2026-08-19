@@ -151,7 +151,7 @@
     const sw = useFull ? img.naturalWidth : Math.round(box.w * s);
     const sh = useFull ? img.naturalHeight : Math.round(box.h * s);
 
-    const maxW = opts.maxW || 1600;
+    const maxW = opts.maxW || 1400;
     const scale = Math.min(1, maxW / sw);
     const w = Math.max(1, Math.round(sw * scale)), h = Math.max(1, Math.round(sh * scale));
 
@@ -162,11 +162,12 @@
     ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
 
     let q = 0.82, out = cv.toDataURL("image/jpeg", q);
-    while (out.length > 900 * 1024 && q > 0.4) { q -= 0.12; out = cv.toDataURL("image/jpeg", q); }
+    while (out.length > 320 * 1024 && q > 0.45) { q -= 0.1; out = cv.toDataURL("image/jpeg", q); }
 
     const cb = done;          // เก็บไว้ก่อน เพราะ close() จะล้างค่านี้ทิ้ง
     close();
-    cb(out, w, h, Math.round(out.length / 1024));
+    // ส่งไฟล์จริงไปด้วย เผื่อผู้เรียกจะอัปโหลดขึ้นคลังรูปแทนการฝังเป็นข้อความ
+    cv.toBlob(blob => cb(out, w, h, Math.round(out.length / 1024), blob), "image/jpeg", q);
   }
 
   function close() {

@@ -254,13 +254,18 @@
       return head("ตั้งค่าระบบหลังบ้าน", "เปลี่ยนรหัสผ่านและจัดการข้อมูล") + `
         <div class="row">${fld("รหัสผ่านใหม่", "__newpw", "", "password")}<div class="field"><label>&nbsp;</label>
           <button class="addbtn" id="pwBtn">เปลี่ยนรหัสผ่าน</button></div></div>
+        <div class="item"><b>ขนาดเนื้อหาและความเร็วเว็บ</b>
+          <p style="color:var(--muted);font-size:.88rem;margin:6px 0 10px">
+            รูปที่อัปโหลดก่อนหน้านี้ถูก <b>ฝังเป็นข้อความยาวๆ</b> ไว้ในเนื้อหา ทำให้ผู้เข้าชมต้องโหลดก้อนใหญ่ทุกครั้ง
+            จึงเห็นรูปเก่าค้างอยู่ครู่หนึ่งก่อนเปลี่ยน · กดปุ่มด้านล่างเพื่อย้ายรูปเหล่านั้นไปเก็บเป็นไฟล์ในคลังรูป
+          </p>
+          <p id="imgStat" style="font-size:.88rem;margin:0 0 10px"></p>
+          <button class="addbtn" id="migrateImgs">📦 ย้ายรูปที่ฝังไว้ขึ้นคลังรูป</button></div>
         <div class="item"><b>วิธีใช้งานระบบหลังบ้าน</b>
           <ol style="color:var(--muted);font-size:.88rem;margin-top:8px;padding-left:20px">
             <li>แก้ไขข้อมูลในแท็บต่างๆ แล้วกด <b>💾 บันทึกทั้งหมด</b> ที่มุมขวาบน</li>
-            <li>ข้อมูลถูกเก็บในเบราว์เซอร์เครื่องนี้ (localStorage) — เห็นผลทันทีเมื่อเปิดเว็บไซต์บนเครื่องเดียวกัน</li>
-            <li>ต้องการให้ผู้เข้าชมทุกคนเห็นเนื้อหาใหม่: กด <b>⬇ ส่งออก JSON</b> แล้วนำค่าที่ได้ไปแทนใน
-              <code>assets/js/data.js</code> (ตัวแปร <code>window.BWT_DEFAULT</code>) แล้วอัปโหลดขึ้นโฮสต์</li>
-            <li><b>⬆ นำเข้า JSON</b> ใช้กู้คืนข้อมูลจากไฟล์สำรอง</li>
+            <li>กดบันทึกแล้วเนื้อหาจะขึ้นฐานข้อมูล ทุกเครื่องเห็นตรงกันทันที</li>
+            <li><b>⬇ ส่งออก JSON</b> ใช้เก็บสำรองไว้ · <b>⬆ นำเข้า JSON</b> ใช้กู้คืนจากไฟล์สำรอง</li>
           </ol></div>
         <div class="item"><b>ความปลอดภัย</b>
           <p style="color:var(--muted);font-size:.88rem;margin:6px 0 0">รหัสผ่านนี้เป็นการป้องกันเบื้องต้นฝั่งหน้าเว็บเท่านั้น
@@ -290,6 +295,7 @@
     });
     /* ปุ่มต่างๆ ในแผงถูกดักจับด้วย event delegation ที่ระดับ document (ผูกครั้งเดียว)
        จึงไม่ต้องผูก event ใหม่ทุกครั้งที่ render */
+    if (current === "settings") { try { showImgStat(); } catch (e) { } }
   }
 
   $("#side").addEventListener("click", e => {
@@ -369,14 +375,21 @@
       const aspect = +(e.target.dataset.ar || 0);
       e.target.value = "";                       // เลือกไฟล์เดิมซ้ำได้
 
-      const apply = (dataUrl, w, h, kb) => {
-        if (setImageValue(targetId, dataUrl))
-          toast(`เปลี่ยนรูปแล้ว (${w}×${h}, ${kb} KB) — อย่าลืมกด 💾 บันทึกทั้งหมด`);
+      const apply = async (dataUrl, w, h, kb, blob) => {
+        let url = dataUrl, where = "ฝังในเนื้อหา";
+        // ส่งขึ้นคลังรูปก่อน เนื้อหาเว็บจะได้ไม่บวม โหลดหน้าเว็บเร็วขึ้นมาก
+        if (blob && window.BWT_DB && window.BWT_DB.uploadImage) {
+          toast("กำลังอัปโหลดรูปขึ้นคลัง...");
+          try { url = await window.BWT_DB.uploadImage(blob, targetId); where = "คลังรูป"; }
+          catch (err) { console.warn("อัปโหลดขึ้นคลังรูปไม่สำเร็จ ใช้วิธีฝังรูปแทน:", err.message); }
+        }
+        if (setImageValue(targetId, url))
+          toast(`เปลี่ยนรูปแล้ว (${w}×${h}, ${kb} KB, ${where}) — อย่าลืมกด 💾 บันทึกทั้งหมด`);
       };
 
       // เปิดหน้าต่างครอปก่อน ถ้าโหลดเครื่องมือครอปไม่ได้ ค่อยย่อรูปตรงๆ
-      if (window.BWT_CROP) window.BWT_CROP.open(f, { aspect, maxW: 1600 }, apply);
-      else { toast("กำลังย่อรูป..."); shrink(f, 1600, apply); }
+      if (window.BWT_CROP) window.BWT_CROP.open(f, { aspect, maxW: 1400 }, apply);
+      else { toast("กำลังย่อรูป..."); shrink(f, 1400, apply); }
     }
     if (e.target.classList.contains("img-preset-sel")) {
       const val = e.target.value;
@@ -421,8 +434,77 @@
         if (confirm("ลบข้อมูลใบขอเสนอราคาทั้งหมดในเครื่องนี้?")) { localStorage.removeItem(LS_LEADS); build(); toast("ลบเรียบร้อย"); }
       }
       if (e.target.id === "csvBtn") downloadCSV();
+      if (e.target.id === "migrateImgs") migrateImages();
     }
   });
+
+  /* ---------- ย้ายรูปที่ฝังไว้ในเนื้อหา ขึ้นไปเก็บเป็นไฟล์ในคลังรูป ---------- */
+
+  /* เดินดูทุกช่องในเนื้อหา หาค่าที่เป็นรูปฝัง (ขึ้นต้นด้วย data:image) */
+  function eachEmbedded(obj, fn, path) {
+    if (!obj || typeof obj !== "object") return;
+    for (const k of Object.keys(obj)) {
+      const v = obj[k], p = path ? path + "." + k : k;
+      if (typeof v === "string" && v.startsWith("data:image")) fn(obj, k, v, p);
+      else if (v && typeof v === "object") eachEmbedded(v, fn, p);
+    }
+  }
+
+  function embeddedList(data) {
+    const out = [];
+    eachEmbedded(data, (o, k, v, p) => out.push({ o, k, v, p }));
+    return out;
+  }
+
+  function showImgStat() {
+    const el = $("#imgStat"); if (!el) return;
+    const list = embeddedList(D);
+    const mb = (JSON.stringify(D).length / 1048576).toFixed(2);
+    el.innerHTML = list.length
+      ? `ตอนนี้มีรูปฝังอยู่ <b>${list.length} รูป</b> · ขนาดเนื้อหารวม <b>${mb} MB</b>`
+      : `<span style="color:#0a8a3d">เรียบร้อย ไม่มีรูปฝังเหลือแล้ว · ขนาดเนื้อหารวม <b>${mb} MB</b></span>`;
+  }
+
+  async function migrateImages() {
+    if (!window.BWT_DB || !window.BWT_DB.uploadImage) return toast("ยังเชื่อมต่อฐานข้อมูลไม่ได้", true);
+    collect();
+    const list = embeddedList(D);
+    if (!list.length) { showImgStat(); return toast("ไม่มีรูปฝังที่ต้องย้ายแล้ว"); }
+
+    const btn = $("#migrateImgs");
+    if (btn) { btn.disabled = true; btn.textContent = "กำลังย้าย..."; }
+
+    let ok = 0, fail = 0, firstErr = "";
+    for (let i = 0; i < list.length; i++) {
+      const it = list[i];
+      if (btn) btn.textContent = `กำลังย้าย ${i + 1}/${list.length}...`;
+      try {
+        const url = await window.BWT_DB.uploadImage(window.BWT_DB.dataUrlToBlob(it.v), it.p);
+        it.o[it.k] = url;
+        ok++;
+      } catch (e) { fail++; if (!firstErr) firstErr = e.message; }
+    }
+
+    if (btn) { btn.disabled = false; btn.textContent = "📦 ย้ายรูปที่ฝังไว้ขึ้นคลังรูป"; }
+
+    if (ok) {
+      D.version = window.BWT_DEFAULT.version;
+      try {
+        await window.BWT_DB.saveContent(D, pw());
+        try {
+          localStorage.setItem(LS_SITE, JSON.stringify(D));
+          const st = await window.BWT_DB.fetchStamp();
+          if (st) localStorage.setItem("bwt_site_stamp", st);
+        } catch (e) { try { localStorage.removeItem("bwt_site_stamp"); } catch (e2) { } }
+      } catch (e) { toast("ย้ายรูปแล้วแต่บันทึกไม่สำเร็จ: " + e.message, true); }
+    }
+
+    build();
+    showImgStat();
+    toast(fail
+      ? `ย้ายสำเร็จ ${ok} รูป · ไม่สำเร็จ ${fail} รูป (${firstErr.slice(0, 80)})`
+      : `ย้ายรูปขึ้นคลังสำเร็จทั้งหมด ${ok} รูป — เว็บจะโหลดเร็วขึ้นมาก`, !!fail);
+  }
 
   function downloadCSV() {
     const L = JSON.parse(localStorage.getItem(LS_LEADS) || "[]");

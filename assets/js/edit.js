@@ -238,14 +238,21 @@
       inp.remove();
       if (!f) return;
 
-      const apply = (dataUrl, w, h, kb) => {
-        cb(dataUrl);
-        status(`✓ เปลี่ยนรูปแล้ว (${w}×${h}, ${kb} KB) — อย่าลืมกดบันทึก`, true);
+      const apply = async (dataUrl, w, h, kb, blob) => {
+        let url = dataUrl, where = "ฝังในเนื้อหา";
+        // ส่งขึ้นคลังรูปก่อน เนื้อหาเว็บจะได้ไม่บวม โหลดหน้าเว็บเร็วขึ้นมาก
+        if (blob && window.BWT_DB && window.BWT_DB.uploadImage) {
+          status("กำลังอัปโหลดรูปขึ้นคลัง...", false);
+          try { url = await window.BWT_DB.uploadImage(blob, "img"); where = "คลังรูป"; }
+          catch (err) { console.warn("อัปโหลดขึ้นคลังรูปไม่สำเร็จ ใช้วิธีฝังรูปแทน:", err.message); }
+        }
+        cb(url);
+        status(`✓ เปลี่ยนรูปแล้ว (${w}×${h}, ${kb} KB, ${where}) — อย่าลืมกดบันทึก`, true);
       };
 
       // เปิดหน้าต่างครอปก่อน โดยตั้งกรอบตามสัดส่วนช่องที่รูปจะไปวางจริง
-      if (window.BWT_CROP) window.BWT_CROP.open(f, { aspect: aspect || 0, maxW: 1600 }, apply);
-      else { status("กำลังอัปโหลดรูป...", false); shrink(f, 1600, apply); }
+      if (window.BWT_CROP) window.BWT_CROP.open(f, { aspect: aspect || 0, maxW: 1400 }, apply);
+      else { status("กำลังอัปโหลดรูป...", false); shrink(f, 1400, apply); }
     };
     inp.click();
   }
