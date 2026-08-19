@@ -105,8 +105,9 @@
         <div class="row">${fld("เบอร์โทร (คั่นด้วยจุลภาค ,)", "company.phones", c.phones.join(", "))}${fld("อีเมลรับใบเสนอราคา", "company.email", c.email)}</div>
         <div class="row">${fld("LINE ID", "company.line", c.line)}${fld("ลิงก์ LINE", "company.lineUrl", c.lineUrl)}</div>
         <div class="row">${fld("เวลาทำการ", "company.hours", c.hours)}${fld("ลิงก์ Google Maps", "company.mapUrl", c.mapUrl)}</div>
-        <div class="row">${fld("Facebook", "company.facebook", c.facebook)}${fld("YouTube", "company.youtube", c.youtube)}</div>
-        <div class="row">${fld("Instagram", "company.instagram", c.instagram)}${fld("TikTok", "company.tiktok", c.tiktok)}</div>
+        <div class="row">${fld("ลิงก์ Facebook", "company.facebook", c.facebook)}${fld("ลิงก์ TikTok", "company.tiktok", c.tiktok)}</div>
+        <div class="row">${fld("ลิงก์ YouTube", "company.youtube", c.youtube)}${fld("ลิงก์ Instagram (เว้นว่างถ้าไม่มี)", "company.instagram", c.instagram)}</div>
+        <p class="hint">ไอคอนโซเชียลท้ายเว็บมี 4 อัน: Facebook · LINE · TikTok · YouTube (LINE ใช้ลิงก์ในช่องด้านบน)</p>
         <p class="hint">หมายเหตุ: ถ้าเปลี่ยน LINE ID ต้องสร้าง QR Code ใหม่แล้วแทนที่ไฟล์ assets/img/line-qr.svg</p>`;
     },
     hero() {

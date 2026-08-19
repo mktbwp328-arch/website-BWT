@@ -5,7 +5,7 @@
 window.BWT_DEFAULT = {
   /* เลขรุ่นข้อมูล — เมื่อแก้ไฟล์นี้โดยตรง ให้เปลี่ยนเลขนี้ด้วย
      ระบบจะล้างข้อมูลเก่าที่ค้างในเบราว์เซอร์ (localStorage) ให้อัตโนมัติ */
-  version: "2026-08-18.1",
+  version: "2026-08-19.2",
 
   /* ข้อความคงที่ในไฟล์ HTML ที่ถูกแก้จากโหมดแก้ไขหน้าเว็บ
      รูปแบบ: { "ชื่อไฟล์หน้า": { "ตำแหน่งใน DOM": "ข้อความใหม่" } } */
@@ -22,7 +22,12 @@ window.BWT_DEFAULT = {
     lineUrl: "https://line.me/ti/p/~bwtraining",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=328%2F1+%E0%B8%AB%E0%B8%A1%E0%B8%B9%E0%B9%88+6+%E0%B8%84%E0%B8%A5%E0%B8%AD%E0%B8%87%E0%B8%99%E0%B8%B4%E0%B8%A2%E0%B8%A1%E0%B8%A2%E0%B8%B2%E0%B8%95%E0%B8%A3%E0%B8%B2+%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B8%9A%E0%B9%88%E0%B8%AD+%E0%B8%AA%E0%B8%A1%E0%B8%B8%E0%B8%97%E0%B8%A3%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3+10560",
     hours: "จันทร์ – เสาร์ 08:30 – 18:00 น. (ตอบไลน์และให้คำปรึกษาทุกวัน)",
-    facebook: "https://www.facebook.com/people/BW-Training/61564944085899/", youtube: "#", instagram: "#", tiktok: "#"
+    /* โซเชียล — ยังไม่ทราบลิงก์จริงของ TikTok/YouTube จึงตั้งเป็นหน้าค้นหาชื่อบริษัทไว้ก่อน
+       แก้เป็นลิงก์ช่องจริงได้ที่หลังบ้าน แท็บ "ข้อมูลบริษัท" */
+    facebook: "https://www.facebook.com/people/BW-Training/61564944085899/",
+    tiktok: "https://www.tiktok.com/search?q=BW%20Training",
+    youtube: "https://www.youtube.com/results?search_query=BW+Training+%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%88%E0%B8%B1%E0%B8%94+outing",
+    instagram: ""
   },
 
   hero: {
