@@ -32,15 +32,53 @@
     cur[last] = v;
   };
 
-  /* ---------- เข้าสู่ระบบ ---------- */
+  /* ---------- เข้าสู่ระบบ ----------
+     จำรหัสไว้ในเครื่อง — ใส่ครั้งแรกครั้งเดียว ครั้งต่อไปเข้าแก้ไขได้ทันที
+     และใช้แถบล็อกอินในหน้าเว็บแทนป๊อปอัปของเบราว์เซอร์ */
+  const LS_REMEMBER = "bwt_edit_pass";
   function pw() { return localStorage.getItem(LS_PW) || DEFAULT_PW; }
-  function auth() {
+
+  function askPassword() {
+    return new Promise(resolve => {
+      const box = document.createElement("div");
+      box.className = "ed-login";
+      box.innerHTML = `
+        <form class="ed-login-card">
+          <img src="assets/img/logo.png" alt="" width="64">
+          <h2>โหมดแก้ไขหน้าเว็บ</h2>
+          <p>ใส่รหัสผ่านครั้งแรกครั้งเดียว ครั้งต่อไปเข้าได้ทันที</p>
+          <input type="password" id="edPw" placeholder="รหัสผ่าน" autocomplete="current-password" autofocus>
+          <div class="ed-login-err" id="edErr"></div>
+          <div class="ed-login-btns">
+            <button type="submit" class="ed-btn ed-save">เข้าโหมดแก้ไข</button>
+            <button type="button" class="ed-btn" id="edCancel">ยกเลิก</button>
+          </div>
+        </form>`;
+      document.body.appendChild(box);
+      const input = box.querySelector("#edPw");
+      setTimeout(() => input.focus(), 50);
+
+      box.querySelector("form").addEventListener("submit", e => {
+        e.preventDefault();
+        if (input.value === pw()) {
+          localStorage.setItem(LS_REMEMBER, input.value);   // จำไว้ ไม่ต้องถามอีก
+          box.remove(); resolve(true);
+        } else {
+          box.querySelector("#edErr").textContent = "รหัสผ่านไม่ถูกต้อง";
+          input.select();
+        }
+      });
+      box.querySelector("#edCancel").addEventListener("click", () => { box.remove(); resolve(false); });
+    });
+  }
+
+  async function auth() {
+    // เคยใส่รหัสถูกไว้แล้ว → เข้าได้เลย ไม่ต้องถามซ้ำ
+    if (localStorage.getItem(LS_REMEMBER) === pw()) return true;
     if (sessionStorage.getItem(LS_AUTH) === "1") return true;
-    const v = prompt("ใส่รหัสผ่านเพื่อเข้าโหมดแก้ไขหน้าเว็บ");
-    if (v === null) return false;
-    if (v === pw()) { sessionStorage.setItem(LS_AUTH, "1"); return true; }
-    alert("รหัสผ่านไม่ถูกต้อง");
-    return false;
+    const ok = await askPassword();
+    if (ok) sessionStorage.setItem(LS_AUTH, "1");
+    return ok;
   }
 
   /* ---------- แถบเครื่องมือ ---------- */
@@ -54,6 +92,7 @@
       <button class="ed-btn ed-save" id="edSave">💾 บันทึก</button>
       <button class="ed-btn" id="edExport">⬇ ส่งออกไฟล์</button>
       <button class="ed-btn" id="edUndo">↺ ยกเลิกที่แก้</button>
+      <button class="ed-btn" id="edLogout" title="เลิกจำรหัสผ่านในเครื่องนี้">🔒 ล็อก</button>
       <button class="ed-btn ed-exit" id="edExit">✕ ออก</button>`;
     document.body.appendChild(bar);
     document.body.classList.add("ed-on");
@@ -67,6 +106,11 @@
     };
     $("#edExit").onclick = () => {
       if (dirty && !confirm("ยังไม่ได้บันทึก ต้องการออกจากโหมดแก้ไขเลยไหม?")) return;
+      const u = new URL(location.href); u.searchParams.delete("edit"); location.href = u.toString();
+    };
+    $("#edLogout").onclick = () => {
+      if (!confirm("เลิกจำรหัสผ่านในเครื่องนี้? ครั้งหน้าจะต้องใส่รหัสใหม่")) return;
+      localStorage.removeItem(LS_REMEMBER); sessionStorage.removeItem(LS_AUTH);
       const u = new URL(location.href); u.searchParams.delete("edit"); location.href = u.toString();
     };
   }
@@ -287,8 +331,8 @@
   function wire() { wireText(); wireImages(); wireStatic(); }
 
   /* ---------- เริ่มทำงาน ---------- */
-  function start() {
-    if (!auth()) {
+  async function start() {
+    if (!(await auth())) {
       const u = new URL(location.href); u.searchParams.delete("edit");
       location.replace(u.toString());
       return;

@@ -767,6 +767,21 @@ textarea{resize:vertical;min-height:110px}
 .accordion.open .ac-body{max-height:420px}
 
 /* ---------- โหมดแก้ไขสดบนหน้าเว็บ ---------- */
+/* แถบล็อกอินในหน้าเว็บ (แทนป๊อปอัปของเบราว์เซอร์) */
+.ed-login{position:fixed;inset:0;z-index:4000;display:grid;place-items:center;
+  background:rgba(3,31,92,.55);backdrop-filter:blur(4px);padding:20px}
+.ed-login-card{background:#fff;border-radius:20px;padding:34px 30px;width:min(380px,100%);
+  text-align:center;box-shadow:0 30px 70px rgba(3,31,92,.4);font-family:var(--body-th)}
+.ed-login-card img{margin:0 auto 12px}
+.ed-login-card h2{font-size:1.15rem;color:var(--blue-deep);margin:0 0 6px;font-weight:600}
+.ed-login-card p{color:var(--muted);font-size:.86rem;margin:0 0 18px}
+.ed-login-card input{text-align:center;font-size:1rem;margin-bottom:10px}
+.ed-login-err{color:#d33;font-size:.84rem;min-height:20px;margin-bottom:6px}
+.ed-login-btns{display:flex;gap:10px}
+.ed-login-btns .ed-btn{flex:1;justify-content:center;padding:11px}
+.ed-login-btns .ed-btn:not(.ed-save){background:var(--paper);color:var(--ink)}
+.ed-login-btns .ed-btn:not(.ed-save):hover{background:var(--line)}
+
 .ed-bar{
   position:fixed;left:0;right:0;bottom:0;z-index:3000;
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
