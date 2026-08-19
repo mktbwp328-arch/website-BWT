@@ -476,12 +476,15 @@
       if (remote.version !== window.BWT_DEFAULT.version) return;   // คนละรุ่นข้อมูล ไม่นำมาใช้
       if (JSON.stringify(remote) === JSON.stringify(S)) return;    // เหมือนเดิม ไม่ต้องวาดใหม่
 
-      localStorage.setItem(LS_SITE, JSON.stringify(remote));
+      try { localStorage.setItem(LS_SITE, JSON.stringify(remote)); } catch (e) {}
       Object.keys(remote).forEach(k => { S[k] = remote[k]; });
-      renderHeader(); renderFooter(); heroText();
+      renderHeader(); renderFooter(); R.heroText();
       if (typeof window.pageInit === "function") window.pageInit(R, S);
       applyPageText(); reveals(); counters();
-    } catch (e) { /* ออฟไลน์หรือยังไม่ได้ตั้งตาราง — ใช้เนื้อหาในเครื่องต่อไป */ }
+    } catch (e) {
+      // ออฟไลน์ / ยังไม่ได้ตั้งตาราง — ใช้เนื้อหาในเครื่องต่อไป
+      console.warn("ซิงก์เนื้อหาจาก Supabase ไม่สำเร็จ:", e.message);
+    }
   }
 
   /* ---------- interactions ---------- */
