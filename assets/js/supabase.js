@@ -45,6 +45,18 @@
     return true;
   }
 
+  /* ---------- ถามแค่ "แก้ล่าสุดเมื่อไหร่" ----------
+     ข้อมูลไม่กี่สิบไบต์ ใช้เช็คก่อนว่าต้องโหลดเนื้อหาก้อนใหญ่ใหม่หรือไม่
+     ถ้าไม่มีอะไรเปลี่ยน ก็ไม่ต้องโหลดซ้ำ หน้าเว็บจึงไม่กระพริบ */
+  async function fetchStamp() {
+    const res = await fetch(api + "/site_content?id=eq.1&select=updated_at", {
+      headers: headers(), cache: "no-store"
+    });
+    if (!res.ok) return null;
+    const rows = await res.json();
+    return rows && rows[0] ? rows[0].updated_at : null;
+  }
+
   /* ---------- ดึงเนื้อหาเว็บไซต์ ---------- */
   async function fetchContent() {
     const res = await fetch(api + "/site_content?id=eq.1&select=content,updated_at", {
@@ -76,5 +88,5 @@
     }
   }
 
-  window.BWT_DB = { url: URL, saveLead, fetchContent, saveContent, ping };
+  window.BWT_DB = { url: URL, saveLead, fetchStamp, fetchContent, saveContent, ping };
 })();

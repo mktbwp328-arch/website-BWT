@@ -16,6 +16,7 @@
   /* ---------- data layer ---------- */
   const LS_SITE = "bwt_site_v1";
   const LS_LEADS = "bwt_leads_v1";
+  const LS_STAMP = "bwt_site_stamp";   // เวลาที่แก้ล่าสุดของเนื้อหาชุดที่เก็บไว้ในเครื่อง
 
   function deepMerge(base, over) {
     if (Array.isArray(over)) return over.slice();
@@ -479,13 +480,24 @@
     if (dbSynced || !window.BWT_DB) return;
     dbSynced = true;
     try {
+      /* ถามก่อนว่าเนื้อหาบนฐานข้อมูลถูกแก้ล่าสุดเมื่อไหร่ (ข้อมูลไม่กี่สิบไบต์)
+         ถ้าตรงกับที่เครื่องนี้ใช้อยู่ ก็จบเลย ไม่ต้องโหลดใหม่ ไม่ต้องวาดใหม่
+         — นี่คือสาเหตุที่รูปเคยกระพริบเป็นรูปเก่าแวบหนึ่งทุกครั้งที่เปิดหน้า */
+      const stamp = await window.BWT_DB.fetchStamp();
+      if (stamp && stamp === localStorage.getItem(LS_STAMP) && localStorage.getItem(LS_SITE)) return;
+
       const row = await window.BWT_DB.fetchContent();
       if (!row || !row.content) return;
       const remote = row.content;
       if (remote.version !== window.BWT_DEFAULT.version) return;   // คนละรุ่นข้อมูล ไม่นำมาใช้
-      if (JSON.stringify(remote) === JSON.stringify(S)) return;    // เหมือนเดิม ไม่ต้องวาดใหม่
 
-      try { localStorage.setItem(LS_SITE, JSON.stringify(remote)); } catch (e) {}
+      try {
+        localStorage.setItem(LS_SITE, JSON.stringify(remote));
+        localStorage.setItem(LS_STAMP, row.updated_at || stamp || "");
+      } catch (e) {
+        // พื้นที่เก็บเต็ม — ล้างตราเวลาทิ้ง เพื่อไม่ให้เข้าใจผิดว่าแคชตรงกับฐานข้อมูล
+        try { localStorage.removeItem(LS_STAMP); } catch (e2) {}
+      }
       Object.keys(remote).forEach(k => { S[k] = remote[k]; });
       renderHeader(); renderFooter(); R.heroText();
       if (typeof window.pageInit === "function") window.pageInit(R, S);

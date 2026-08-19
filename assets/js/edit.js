@@ -137,7 +137,12 @@
         await window.BWT_DB.saveContent(D, pw());
         dirty = false;
         document.body.classList.remove("ed-dirty");
-        try { localStorage.setItem(LS_SITE, JSON.stringify(D)); } catch (e) {}
+        try {
+          localStorage.setItem(LS_SITE, JSON.stringify(D));
+          // จำเวลาที่แก้ล่าสุดไว้ด้วย หน้าถัดไปจะได้ไม่ต้องโหลดซ้ำและไม่กระพริบ
+          const st = await window.BWT_DB.fetchStamp();
+          if (st) localStorage.setItem("bwt_site_stamp", st);
+        } catch (e) { try { localStorage.removeItem("bwt_site_stamp"); } catch (e2) {} }
         status("✓ บันทึกขึ้นฐานข้อมูลแล้ว — ทุกเครื่องจะเห็นเนื้อหานี้", true);
         return;
       } catch (err) {
