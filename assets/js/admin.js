@@ -144,7 +144,9 @@
            <div class="row one">${fld("คำอธิบาย (อังกฤษ)", `stats.${i}.label`, s.label)}</div>`)).join(""));
     },
     services() {
-      return head("บริการ", "7 หมวดบริการหลักที่แสดงในหน้าแรกและหน้าบริการ") +
+      return head("บริการ",
+        "7 หมวดบริการหลัก — รูปในหน้านี้แสดงที่ <b>หน้าบริการ (services.html)</b> เท่านั้น<br>" +
+        "หน้าแรกไม่ได้ใช้รูปชุดนี้ ถ้าจะเปลี่ยนรูปช่อง “บริการของเรา” บนหน้าแรก ให้ไปที่แท็บ <b>📰 บทความแนะนำบริษัท</b>") +
         listBlock("services", "เพิ่มบริการ", D.services.map((s, i) => itemBox("services", i,
           `<div class="row">${fld("รหัส (id — ใช้ทำลิงก์)", `services.${i}.id`, s.id)}${fld("ไอคอน (อีโมจิ)", `services.${i}.ico`, s.ico)}</div>
            <div class="row">${fld("ชื่อบริการ", `services.${i}.title`, s.title)}</div>
@@ -155,8 +157,8 @@
     expertise() {
       const x = D.expertise;
       return head("แถบความเชี่ยวชาญ (หน้าแรก)", "รูปด้านซ้าย + ข้อความด้านขวา") + `
-        <div class="row">${fld("ไฟล์รูปภาพ (path)", "expertise.img", x.img)}${fld("ป้ายเล็กด้านบน", "expertise.kicker", x.kicker)}</div>
-        ${x.img ? `<img src="${esc(x.img)}" alt="" style="max-height:110px;border-radius:10px;margin-bottom:12px">` : ""}
+        <div class="row one">${fld("รูปด้านซ้าย", "expertise.img", x.img, "img")}</div>
+        <div class="row one">${fld("ป้ายเล็กด้านบน", "expertise.kicker", x.kicker)}</div>
         <div class="row one">${fld("หัวข้อ", "expertise.title", x.title, "textarea")}</div>
         <div class="row one">${fld("คำอธิบาย", "expertise.desc", x.desc, "textarea")}</div>
         <h3 style="margin-top:18px;font-size:1rem">ป้ายจุดเด่น</h3>
@@ -165,28 +167,28 @@
     },
     intro() {
       const n = D.intro;
-      return head("บทความแนะนำบริษัท (หน้าแรก)", "ข้อความด้านซ้าย + สไลด์ภาพด้านขวา — ใส่ &lt;b&gt;ข้อความ&lt;/b&gt; เพื่อทำตัวหนาได้") + `
+      return head("บทความแนะนำบริษัท (หน้าแรก)",
+        "นี่คือช่อง <b>“บริการของเรา”</b> บนหน้าแรก — ข้อความด้านซ้าย + แถบภาพเลื่อนด้านขวา<br>" +
+        "รูปในหัวข้อ “ภาพในแถบเลื่อน” ด้านล่างคือรูปที่เห็นบนหน้าแรก · ใส่ &lt;b&gt;ข้อความ&lt;/b&gt; เพื่อทำตัวหนาได้") + `
         <div class="row one">${fld("หัวข้อ", "intro.title", n.title)}</div>
         <div class="row one">${fld("ข้อความนำ", "intro.lead", n.lead, "textarea")}</div>
         <div class="row one">${fld("หัวข้อย่อย (บรรทัดละ 1 ข้อ)", "intro.bullets", n.bullets.join("\n"), "textarea")}</div>
         <h3 style="margin-top:20px;font-size:1rem">ภาพสไลด์ด้านขวา</h3>
         ${listBlock("intro.gallery", "เพิ่มภาพสไลด์", n.gallery.map((g, i) => itemBox("intro.gallery", i,
-          `<div class="row">${fld("ไฟล์รูปภาพ (path)", `intro.gallery.${i}.img`, g.img)}${fld("คำอธิบายรูป (SEO)", `intro.gallery.${i}.alt`, g.alt || "")}</div>
-           ${g.img ? `<img src="${esc(g.img)}" alt="" style="max-height:90px;border-radius:8px;margin-top:8px">` : ""}`)).join(""))}`;
+          `<div class="row one">${fld("ภาพในแถบเลื่อน", `intro.gallery.${i}.img`, g.img, "img")}</div>
+           <div class="row one">${fld("คำอธิบายรูป (ไม่แสดงบนหน้าเว็บ ใช้เพื่อ SEO)", `intro.gallery.${i}.alt`, g.alt || "")}</div>`)).join(""))}`;
     },
     portfolio() {
       return head("ผลงาน", "แสดงเป็นรูปภาพล้วน ไม่มีตัวหนังสือทับ — หมวด (cat) ใช้กับปุ่มกรอง: outing, team, seminar, party, csr") +
         listBlock("portfolio", "เพิ่มผลงาน", D.portfolio.map((p, i) => itemBox("portfolio", i,
-          `<div class="row">${fld("ไฟล์รูปภาพ (path)", `portfolio.${i}.img`, p.img || "")}${fld("หมวด (cat)", `portfolio.${i}.cat`, p.cat)}</div>
-           <div class="row one">${fld("คำอธิบายรูป (ไม่แสดงบนหน้าเว็บ ใช้เพื่อ SEO)", `portfolio.${i}.alt`, p.alt || "")}</div>
-           ${p.img ? `<img src="${esc(p.img)}" alt="" style="max-height:90px;border-radius:8px;margin-top:8px">` : ""}`)).join(""));
+          `<div class="row one">${fld("รูปผลงาน", `portfolio.${i}.img`, p.img || "", "img")}</div>
+           <div class="row">${fld("หมวด (cat)", `portfolio.${i}.cat`, p.cat)}${fld("คำอธิบายรูป (ไม่แสดงบนหน้าเว็บ ใช้เพื่อ SEO)", `portfolio.${i}.alt`, p.alt || "")}</div>`)).join(""));
     },
     clients() {
       return head("ลูกค้า", "ช่อง “ไฟล์โลโก้” ใส่ path เช่น assets/img/clients/c01.png — ถ้าเว้นว่างจะแสดงเป็นตัวอักษรแทน") +
         listBlock("clients", "เพิ่มลูกค้า", D.clients.map((c, i) => itemBox("clients", i,
           `<div class="row">${fld("ชื่อองค์กร", `clients.${i}.name`, c.name)}${fld("คำอธิบาย", `clients.${i}.note`, c.note)}</div>
-           <div class="row one">${fld("ไฟล์โลโก้ (path)", `clients.${i}.logo`, c.logo || "")}</div>
-           ${c.logo ? `<img src="${esc(c.logo)}" alt="" style="max-height:56px;margin-top:8px;background:#fff;padding:4px;border-radius:8px">` : ""}`)).join(""));
+           <div class="row one">${fld("โลโก้ลูกค้า", `clients.${i}.logo`, c.logo || "", "img")}</div>`)).join(""));
     },
     testimonials() {
       return head("รีวิวลูกค้า", "ข้อความรีวิวที่แสดงบนหน้าเว็บ") +
