@@ -509,8 +509,24 @@ svg.ico{width:38px;height:38px}
 @supports (width:100cqw){ .im-item{width:100cqw} }
 .im-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
 .im-item:hover img{transform:scale(1.05)}
-/* ในโหมดแก้ไข หยุดเลื่อน เพื่อให้กดเปลี่ยนรูปใบที่ต้องการได้ */
-body.ed-on .im-track{animation:none}
+/* ในโหมดแก้ไข: หยุดเลื่อน แล้วกางทุกภาพออกมาเป็นตาราง
+   จะได้เห็นครบทุกใบและกดเปลี่ยนได้ทีละใบ (เดิมเห็นแค่ใบแรก ใบอื่นอยู่นอกจอ) */
+body.ed-on .intro-marquee{overflow:visible;container-type:normal}
+body.ed-on .im-track{
+  animation:none;display:grid;width:auto;
+  grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+}
+body.ed-on .im-item{width:auto;position:relative}
+body.ed-on .im-item.im-dup{display:none}   /* ซ่อนชุดสำเนาที่ใช้ทำเอฟเฟกต์เลื่อนวน */
+body.ed-on .im-item:hover img{transform:none}
+/* ป้ายบอกลำดับภาพ */
+body.ed-on .im-item[data-slot]::after{
+  content:"ภาพที่ " attr(data-slot);
+  position:absolute;left:8px;top:8px;z-index:5;pointer-events:none;
+  background:var(--blue);color:#fff;font-family:var(--body-th);font-size:.72rem;
+  font-weight:500;padding:3px 10px;border-radius:999px;
+}
+@media(max-width:900px){ body.ed-on .im-track{grid-template-columns:1fr} }
 @media(prefers-reduced-motion:reduce){.im-track{animation:none}}
 
 @media(max-width:900px){

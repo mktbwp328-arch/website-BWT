@@ -333,7 +333,7 @@
           <div class="im-track">${
             // วางภาพ 2 ชุดต่อกัน เพื่อให้เลื่อนวนต่อเนื่องไม่มีรอยต่อ (แบบเดียวกับแถบโลโก้ลูกค้า)
             [0, 1].map(pass => n.gallery.map((g, i) => `
-              <figure class="im-item">
+              <figure class="im-item${pass ? " im-dup" : ""}"${pass === 0 ? ` data-slot="${i + 1}"` : ""}>
                 <img src="${esc(g.img)}"${pass === 0 ? ` data-edit-img="intro.gallery.${i}.img"` : ""}
                      alt="${esc(g.alt || "ภาพกิจกรรมโดย BW Training")}" loading="lazy" decoding="async">
               </figure>`).join("")).join("")
