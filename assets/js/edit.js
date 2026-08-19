@@ -12,8 +12,23 @@
   const DEFAULT_PW = "bwtraining2026";
   const $ = s => document.querySelector(s);
 
-  const wantEdit = new URLSearchParams(location.search).get("edit") === "1";
+  /* โหมดแก้ไขต้องอยู่ต่อเนื่องทุกหน้า — กดเมนูไปหน้าไหนก็ยังแก้ได้
+     จำสถานะไว้ใน sessionStorage (ปิดแท็บแล้วหาย) และเติม ?edit=1 ให้ลิงก์ภายในทุกอัน */
+  const LS_MODE = "bwt_edit_mode";
+  const fromUrl = new URLSearchParams(location.search).get("edit") === "1";
+  const wantEdit = fromUrl || sessionStorage.getItem(LS_MODE) === "1";
   if (!wantEdit) return;
+  sessionStorage.setItem(LS_MODE, "1");
+
+  /* เติม ?edit=1 ให้ลิงก์ที่ชี้ไปหน้าอื่นในเว็บนี้ เพื่อให้ URL อ่านแล้วรู้ว่าอยู่ในโหมดแก้ไข */
+  function keepEditOnLinks() {
+    document.querySelectorAll('a[href]').forEach(a => {
+      const href = a.getAttribute("href");
+      if (!href || /^(https?:|mailto:|tel:|#|javascript:)/i.test(href)) return;
+      if (a.target === "_blank" || href.includes("edit=1")) return;
+      a.setAttribute("href", href + (href.includes("?") ? "&" : "?") + "edit=1");
+    });
+  }
 
   /* ---------- ข้อมูล ---------- */
   let D = JSON.parse(JSON.stringify(window.BWT_DEFAULT));
@@ -106,13 +121,21 @@
     };
     $("#edExit").onclick = () => {
       if (dirty && !confirm("ยังไม่ได้บันทึก ต้องการออกจากโหมดแก้ไขเลยไหม?")) return;
-      const u = new URL(location.href); u.searchParams.delete("edit"); location.href = u.toString();
+      leaveEditMode();
     };
     $("#edLogout").onclick = () => {
       if (!confirm("เลิกจำรหัสผ่านในเครื่องนี้? ครั้งหน้าจะต้องใส่รหัสใหม่")) return;
       localStorage.removeItem(LS_REMEMBER); sessionStorage.removeItem(LS_AUTH);
-      const u = new URL(location.href); u.searchParams.delete("edit"); location.href = u.toString();
+      leaveEditMode();
     };
+  }
+
+  /* ออกจากโหมดแก้ไข — ต้องล้างสถานะที่จำไว้ด้วย ไม่งั้นหน้าถัดไปจะกลับเข้าโหมดเอง */
+  function leaveEditMode() {
+    sessionStorage.removeItem(LS_MODE);
+    const u = new URL(location.href);
+    u.searchParams.delete("edit");
+    location.href = u.toString();
   }
 
   const status = (msg, ok) => {
@@ -350,11 +373,13 @@
     });
   }
 
-  function wire() { wireText(); wireImages(); wireStatic(); }
+  function wire() { wireText(); wireImages(); wireStatic(); keepEditOnLinks(); }
 
   /* ---------- เริ่มทำงาน ---------- */
   async function start() {
     if (!(await auth())) {
+      // ใส่รหัสไม่ผ่าน / กดยกเลิก — ต้องล้างสถานะด้วย ไม่งั้นหน้าถัดไปจะถามรหัสวนไม่จบ
+      sessionStorage.removeItem(LS_MODE);
       const u = new URL(location.href); u.searchParams.delete("edit");
       location.replace(u.toString());
       return;
