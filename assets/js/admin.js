@@ -72,7 +72,9 @@
           ${presets}
         </select>
       </div>
-      ${value ? `<div style="margin-top:8px"><img src="${esc(value)}" style="max-height:80px;border-radius:8px;border:1px solid #ddd" alt="Preview"></div>` : ""}
+      <div class="img-prev" data-for="inp_${path.replace(/\./g, '_')}" style="margin-top:8px">
+        ${value ? `<img src="${esc(value)}" style="max-height:80px;border-radius:8px;border:1px solid #ddd" alt="ตัวอย่างรูป">` : ""}
+      </div>
     </div>`;
   }
 
@@ -310,33 +312,65 @@
     "expertise.pills": { ico: "✨", text: "จุดเด่นใหม่" }
   };
 
+  /* ย่อรูปก่อนเก็บ — รูปจากกล้อง/มือถือใหญ่หลายเมกะไบต์
+     ถ้าเก็บเต็มขนาด พื้นที่ในเบราว์เซอร์จะเต็ม แล้วบันทึกไม่ผ่านโดยไม่ฟ้อง */
+  function shrink(file, maxW, cb) {
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => {
+      URL.revokeObjectURL(url);
+      const scale = Math.min(1, maxW / im.naturalWidth);
+      const w = Math.round(im.naturalWidth * scale), h = Math.round(im.naturalHeight * scale);
+      const cv = document.createElement("canvas");
+      cv.width = w; cv.height = h;
+      const ctx = cv.getContext("2d");
+      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(im, 0, 0, w, h);
+      let q = 0.82, out = cv.toDataURL("image/jpeg", q);
+      while (out.length > 900 * 1024 && q > 0.4) { q -= 0.12; out = cv.toDataURL("image/jpeg", q); }
+      cb(out, w, h, Math.round(out.length / 1024));
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); toast("เปิดไฟล์รูปไม่สำเร็จ กรุณาลองไฟล์อื่น", true); };
+    im.src = url;
+  }
+
+  /* อัปเดตช่องที่อยู่รูป + ภาพตัวอย่างใต้ช่อง ให้เห็นผลทันที */
+  function setImageValue(targetId, url) {
+    const inp = document.getElementById(targetId);
+    if (!inp) return false;
+    inp.value = url;
+    const box = document.querySelector(`.img-prev[data-for="${targetId}"]`);
+    if (box) box.innerHTML = `<img src="${esc(url)}" style="max-height:80px;border-radius:8px;border:1px solid #ddd" alt="ตัวอย่างรูป">`;
+    collect();
+    return true;
+  }
+
   document.addEventListener("change", e => {
     if (e.target.classList.contains("img-file-up")) {
       const f = e.target.files[0];
       if (!f) return;
       const targetId = e.target.dataset.target;
-      const targetInput = document.getElementById(targetId);
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (targetInput) {
-          targetInput.value = reader.result;
-          collect();
-          toast("อัปโหลดรูปภาพสำเร็จแล้ว! (อย่าลืมกด 💾 บันทึกทั้งหมด)");
-        }
-      };
-      reader.readAsDataURL(f);
+      e.target.value = "";                       // เลือกไฟล์เดิมซ้ำได้
+      toast("กำลังย่อรูป...");
+      shrink(f, 1600, (dataUrl, w, h, kb) => {
+        if (setImageValue(targetId, dataUrl))
+          toast(`เปลี่ยนรูปแล้ว (${w}×${h}, ${kb} KB) — อย่าลืมกด 💾 บันทึกทั้งหมด`);
+      });
     }
     if (e.target.classList.contains("img-preset-sel")) {
       const val = e.target.value;
       if (!val) return;
-      const targetId = e.target.dataset.target;
-      const targetInput = document.getElementById(targetId);
-      if (targetInput) {
-        targetInput.value = val;
-        collect();
-        toast("เลือกรูปภาพแล้ว");
-      }
+      if (setImageValue(e.target.dataset.target, val)) toast("เลือกรูปภาพแล้ว");
     }
+  });
+
+  /* พิมพ์/วางลิงก์รูปเองก็ให้ภาพตัวอย่างเปลี่ยนตาม */
+  document.addEventListener("input", e => {
+    const inp = e.target;
+    if (!inp.id || !inp.id.startsWith("inp_")) return;
+    const box = document.querySelector(`.img-prev[data-for="${inp.id}"]`);
+    if (!box) return;
+    box.innerHTML = inp.value ? `<img src="${esc(inp.value)}" style="max-height:80px;border-radius:8px;border:1px solid #ddd" alt="ตัวอย่างรูป">` : "";
   });
 
   document.addEventListener("click", e => {
@@ -383,9 +417,29 @@
   }
 
   /* ---------- toolbar ---------- */
-  $("#saveBtn").addEventListener("click", () => {
-    collect(); localStorage.setItem(LS_SITE, JSON.stringify(D));
-    toast("บันทึกเรียบร้อย — เปิดหน้าเว็บไซต์เพื่อดูผล");
+  $("#saveBtn").addEventListener("click", async () => {
+    collect();
+    D.version = window.BWT_DEFAULT.version;
+
+    // ส่งขึ้นฐานข้อมูลก่อน เพื่อให้เว็บจริงเปลี่ยนตามทุกเครื่อง
+    if (window.BWT_DB) {
+      toast("กำลังบันทึกขึ้นฐานข้อมูล...");
+      try {
+        await window.BWT_DB.saveContent(D, pw());
+        try { localStorage.setItem(LS_SITE, JSON.stringify(D)); } catch (e) { }
+        toast("บันทึกขึ้นฐานข้อมูลแล้ว — ทุกเครื่องจะเห็นเนื้อหานี้");
+        return;
+      } catch (err) {
+        console.warn("บันทึกขึ้น Supabase ไม่สำเร็จ:", err.message);
+      }
+    }
+
+    try {
+      localStorage.setItem(LS_SITE, JSON.stringify(D));
+      toast("บันทึกในเครื่องนี้แล้ว — เปิดหน้าเว็บไซต์เพื่อดูผล");
+    } catch (err) {
+      toast("บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลในเบราว์เซอร์เต็ม ลองลดจำนวนรูปที่อัปโหลด", true);
+    }
   });
   $("#exportBtn").addEventListener("click", () => {
     collect(); dl(new Blob([JSON.stringify(D, null, 2)], { type: "application/json" }), "bwt-content.json");
