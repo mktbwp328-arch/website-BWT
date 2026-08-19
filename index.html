@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://www.bwtraining.co.th/assets/img/logo.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/img/logo.png" type="image/png">
-<link rel="stylesheet" href="assets/css/style.css?v=202608200330">
+<link rel="stylesheet" href="assets/css/style.css?v=202608200420">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":["Organization","LocalBusiness","TravelAgency"],"@id":"https://www.bwtraining.co.th/#org",
@@ -126,12 +126,12 @@
 <section class="sec-intro">
   <div class="container">
     <div class="sec-head center">
-      <div class="section-kicker">WHAT WE DO</div>
-      <h2 class="section-title">บริการของเรา</h2>
+      <div class="section-kicker" id="introKicker" data-edit="intro.kicker"></div>
+      <h2 class="section-title" id="introTitle" data-edit="intro.sectionTitle"></h2>
     </div>
     <div class="intro-wrap" id="introBlock"></div>
     <div class="center" style="margin-top:34px">
-      <a class="btn btn-blue btn-lg" href="services.html">ดูรายละเอียดบริการทั้งหมด <span class="arw">→</span></a>
+      <a class="btn btn-blue btn-lg" id="introBtn" href="services.html"><span id="introBtnText" data-edit="intro.btnText"></span> <span class="arw">→</span></a>
     </div>
   </div>
 </section>
@@ -271,8 +271,8 @@
   <div class="box"><div><h3 style="color:#fff">วิดีโอแนะนำบริษัท</h3>
   <p style="color:#bbb">เพิ่มลิงก์วิดีโอได้จากหน้าหลังบ้าน → ส่วน Hero → Video URL</p></div></div></div></div>
 
-<script src="assets/js/supabase.js?v=202608200330"></script>
-<script src="assets/js/data.js?v=202608200330"></script>
+<script src="assets/js/supabase.js?v=202608200420"></script>
+<script src="assets/js/data.js?v=202608200420"></script>
 <script>
 window.pageInit = function (R, S) {
   R.stats("#statGrid");
@@ -291,8 +291,8 @@ window.pageInit = function (R, S) {
   }
 };
 </script>
-<script src="assets/js/main.js?v=202608200330"></script>
-<script src="assets/js/cropper.js?v=202608200330"></script>
-<script src="assets/js/edit.js?v=202608200330"></script>
+<script src="assets/js/main.js?v=202608200420"></script>
+<script src="assets/js/cropper.js?v=202608200420"></script>
+<script src="assets/js/edit.js?v=202608200420"></script>
 </body>
 </html>

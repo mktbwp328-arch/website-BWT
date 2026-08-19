@@ -340,6 +340,14 @@
     intro(sel) {
       const el = document.querySelector(sel); if (!el) return;
       const n = S.intro;
+
+      // หัวข้อและปุ่มอยู่นอกกล่องนี้ จึงต้องใส่ค่าให้แยกต่างหาก
+      const q = id => document.getElementById(id);
+      if (q("introKicker")) q("introKicker").textContent = n.kicker || "";
+      if (q("introTitle")) q("introTitle").textContent = n.sectionTitle || "";
+      if (q("introBtnText")) q("introBtnText").textContent = n.btnText || "";
+      if (q("introBtn") && n.btnLink) q("introBtn").setAttribute("href", n.btnLink);
+
       el.innerHTML = `
         <div class="intro-text">
           <h2 class="intro-title" data-edit="intro.title">${esc(n.title)}</h2>

@@ -205,13 +205,20 @@
       return head("บทความแนะนำบริษัท (หน้าแรก)",
         "นี่คือช่อง <b>“บริการของเรา”</b> บนหน้าแรก — ข้อความด้านซ้าย + แถบภาพเลื่อนด้านขวา<br>" +
         "รูปในหัวข้อ “ภาพในแถบเลื่อน” ด้านล่างคือรูปที่เห็นบนหน้าแรก · ใส่ &lt;b&gt;ข้อความ&lt;/b&gt; เพื่อทำตัวหนาได้") + `
+        <h3 style="margin-top:4px;font-size:1rem">หัวข้อใหญ่ของส่วนนี้</h3>
+        <div class="row">${fld("ป้ายเล็ก (อังกฤษ)", "intro.kicker", n.kicker || "")}${fld("หัวข้อใหญ่", "intro.sectionTitle", n.sectionTitle || "")}</div>
+
+        <h3 style="margin-top:18px;font-size:1rem">บทความด้านซ้าย</h3>
         <div class="row one">${fld("หัวข้อ", "intro.title", n.title)}</div>
         <div class="row one">${fld("ข้อความนำ", "intro.lead", n.lead, "textarea")}</div>
         <div class="row one">${fld("หัวข้อย่อย (บรรทัดละ 1 ข้อ)", "intro.bullets", n.bullets.join("\n"), "textarea")}</div>
         <h3 style="margin-top:20px;font-size:1rem">ภาพสไลด์ด้านขวา</h3>
         ${listBlock("intro.gallery", "เพิ่มภาพสไลด์", n.gallery.map((g, i) => itemBox("intro.gallery", i,
           `<div class="row one">${fld("ภาพในแถบเลื่อน", `intro.gallery.${i}.img`, g.img, "img")}</div>
-           <div class="row one">${fld("คำอธิบายรูป (ไม่แสดงบนหน้าเว็บ ใช้เพื่อ SEO)", `intro.gallery.${i}.alt`, g.alt || "")}</div>`)).join(""))}`;
+           <div class="row one">${fld("คำอธิบายรูป (ไม่แสดงบนหน้าเว็บ ใช้เพื่อ SEO)", `intro.gallery.${i}.alt`, g.alt || "")}</div>`)).join(""))}
+
+        <h3 style="margin-top:18px;font-size:1rem">ปุ่มด้านล่าง</h3>
+        <div class="row">${fld("ข้อความบนปุ่ม", "intro.btnText", n.btnText || "")}${fld("ลิงก์ปุ่ม", "intro.btnLink", n.btnLink || "")}</div>`;
     },
     portfolio() {
       return head("ผลงาน", "แสดงเป็นรูปภาพล้วน ไม่มีตัวหนังสือทับ — หมวด (cat) ใช้กับปุ่มกรอง: outing, team, seminar, party, csr") +
