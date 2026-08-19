@@ -669,7 +669,16 @@ body.ed-on .im-item[data-slot]::after{
 @keyframes scrollx{to{transform:translateX(-50%)}}
 
 /* ---------- Testimonials (พื้นไล่สีเขียว → น้ำเงิน) ---------- */
-.sec-review{background:linear-gradient(100deg,#4fa845 0%,#2f9b6e 28%,#1f8fae 58%,#1f7fd8 82%,#2a6ee0 100%);color:#fff}
+/* ไล่เฉดจากสีในโลโก้: ฟ้าอมเขียว → น้ำเงินหลัก → น้ำเงินเข้ม
+   คุมไม่ให้ฝั่งซ้ายสว่างเกินไป เพราะตัวหนังสือสีขาวจะอ่านยาก
+   (ความสว่างของฟ้า #16CFE5 ทำให้ค่าความต่างเหลือแค่ 2.9 ต้องได้อย่างน้อย 4.5)
+   จึงใช้ฟ้าเข้มเป็นพื้น แล้วแต้มฟ้าสดไว้ที่มุมบนซ้ายซึ่งไม่มีตัวหนังสือทับ */
+.sec-review{
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(22,207,229,.55) 0%, rgba(22,207,229,0) 55%),
+    linear-gradient(100deg,#0a76bd 0%,#0857c2 28%,#0645C5 58%,#042f8a 85%,#031f5c 100%);
+  color:#fff;
+}
 .sec-review .section-title{color:#fff}
 .sec-review .section-title-th{color:rgba(255,255,255,.92)}
 .sec-review .section-kicker{color:var(--yellow)}
@@ -677,8 +686,11 @@ body.ed-on .im-item[data-slot]::after{
 .sec-review .grid-3{gap:44px 36px;margin-top:8px}
 
 .tst{display:flex;gap:16px;align-items:flex-start;background:none;box-shadow:none;padding:0;color:#fff}
-.tst-av{flex:0 0 66px;width:66px;height:66px;border-radius:50%;background:#1c3faa;
-  display:grid;place-items:center;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.14)}
+/* วงกลมรูปคน — ใส่ขอบขาวจางไว้ เพราะพื้นหลังไล่เฉดจากฟ้าสว่างไปน้ำเงินเข้ม
+   ถ้าใช้สีทึบสีเดียวจะกลืนกับพื้นตรงฝั่งเข้ม */
+.tst-av{flex:0 0 66px;width:66px;height:66px;border-radius:50%;background:rgba(255,255,255,.16);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.45),0 6px 18px rgba(0,0,0,.18);
+  display:grid;place-items:center;overflow:hidden}
 .tst-av svg{width:52px;height:52px;margin-top:8px}
 .tst-body{flex:1;min-width:0}
 .tst p{font-size:.95rem;color:#fff;margin:6px 0 0;line-height:1.65}
