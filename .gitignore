@@ -1,0 +1,67 @@
+node_modules/
+package-lock.json
+.vercel
+.DS_Store
+Thumbs.db
+*.log
+
+# ไฟล์ทำงานที่ไม่ต้องขึ้นเว็บ
+tools/
+ChatGPT Image*
+assets/img/clients-sheet.png
+
+# รูปต้นฉบับความละเอียดสูงที่เว็บยังไม่ได้ใช้ — เก็บไว้ในเครื่อง ไม่ต้องขึ้นเว็บ
+# (ถ้าจะเอามาใช้ ให้ลบบรรทัดของไฟล์นั้นออกจากรายการนี้)
+assets/img/IMG_3050.JPG
+assets/img/IMG_3156.JPG
+assets/img/IMG_3128.JPG
+assets/img/S__10231953_0.jpg
+assets/img/DSCF5481.JPG
+assets/img/DSCF5592.JPG
+assets/img/DSCF5609.JPG
+assets/img/DSCF5739.JPG
+assets/img/DSCF5540.JPG
+assets/img/DSCF5671.JPG
+assets/img/DJI_20260306123619_0090_D_0.JPG
+assets/img/IMG_E3121.JPG
+assets/img/2026_01_11_20_33_26_IMG_6356.jpg
+assets/img/IMG_E3119.JPG
+assets/img/DSCF5741.JPG
+assets/img/DSCF5896.JPG
+assets/img/DSCF5580.JPG
+assets/img/LINE_ALBUM_Easy logistics_250917_26.jpg
+assets/img/Generated Image September 25, 2025 - 9_55AM.png
+assets/img/21.jpg
+assets/img/Generated Image September 26, 2025 - 10_54AM.png
+assets/img/Generated Image October 04, 2025 - 2_31PM.png
+assets/img/LINE_ALBUM_12968_250917_20.jpg
+assets/img/Generated Image September 26, 2025 - 10_51AM.png
+assets/img/download (19).png
+assets/img/download (20).png
+assets/img/ปกเว็ป-bw.jpg
+assets/img/LINE_ALBUM_Easy logistics_250917_101.jpg
+assets/img/mock-up-web-bw.jpg
+assets/img/14.jpg
+assets/img/16.jpg
+assets/img/485149160_1127850322473209_6459389428490162020_n.jpg
+assets/img/ป้ายซุ้มส้มตำ.jpg
+assets/img/LINE_ALBUM_Easy logistics_250917_116.jpg
+assets/img/LINE_ALBUM_12968_250917_13.jpg
+assets/img/BWT-ภพ20.pdf
+assets/img/hero-cover-100.png
+assets/img/DJI_20260306130131_0099_D.00_01_45_39.Still007_0.jpg
+assets/img/16290_0_0.jpg
+assets/img/clients-sheet.png
+assets/img/Screenshot 2025-09-25 104725.png
+assets/img/28562_0.jpg
+assets/img/28589_0.jpg
+assets/img/scene-party.svg
+assets/img/scene-beach.svg
+assets/img/scene-mountain.svg
+assets/img/scene-outing.svg
+assets/img/scene-team.svg
+assets/img/scene-seminar.svg
+assets/img/scene-travel.svg
+assets/img/scene-rally.svg
+assets/img/scene-workshop.svg
+assets/img/logo.svg

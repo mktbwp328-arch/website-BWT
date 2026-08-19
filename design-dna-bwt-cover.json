@@ -1,0 +1,354 @@
+{
+  "meta": {
+    "name": "BW Training — Hero Cover DNA",
+    "description": "Thai corporate team-building/outing agency hero. Bold italic display typography over a full-bleed candid group photo, with angular blue+yellow brand geometry, halftone dot textures, and a slab statistics bar. High-energy sports-poster feel executed with corporate discipline.",
+    "source_references": [
+      "ภาพปกหน้าแรก BW Training (คอมโพสิตหน้าจอ 897x598) — ชักเย่อริมหาด, headline BEYOND LIMITS / BUILDING / TOGETHER"
+    ],
+    "created_at": "2026-08-17"
+  },
+
+  "design_system": {
+    "color": {
+      "palette_type": "complementary",
+      "primary": {
+        "hex": "#0645C5",
+        "role": "แบรนด์หลัก — หัวข้อ, แถบสถิติ, รูปทรงเรขาคณิต, ริบบิ้นล่าง, ตัวชี้สไลด์ที่ใช้งานอยู่"
+      },
+      "secondary": {
+        "hex": "#062E9E",
+        "role": "น้ำเงินเข้มกว่า ใช้ไล่เฉดในแถบสถิติและรูปทรงซ้อนชั้น เพื่อสร้างความลึก"
+      },
+      "accent": {
+        "hex": "#FFC400",
+        "role": "สีเน้น — ปุ่ม CTA, คำว่า BUILDING, ริบบิ้น FUN·CHALLENGE·TEAMWORK, ไอคอนสถิติ, ลายจุดมุมล่างซ้าย"
+      },
+      "neutral": {
+        "scale": [
+          "#FFFFFF",
+          "#F7F9FC",
+          "#E8EEF7",
+          "#C9D6E8",
+          "#8A9BB5",
+          "#4A5A73",
+          "#1A1A1A"
+        ],
+        "usage": "ขาวคือพื้นหลักฝั่งข้อความและตัวอักษรบนพื้นน้ำเงิน; เทาอมฟ้าอ่อนใช้กับตัวเลขสไลด์ที่ไม่ได้ใช้งาน; เทาเข้ม/ดำแทบไม่ใช้ เพราะน้ำเงินทำหน้าที่เป็นสีตัวอักษรหลักแทน"
+      },
+      "semantic": {
+        "success": "#1FA971",
+        "warning": "#FFC400",
+        "error": "#E23B3B",
+        "info": "#16CFE5"
+      },
+      "surface": {
+        "background": "#FFFFFF",
+        "card": "#F7F9FC",
+        "elevated": "rgba(255,255,255,0.94)"
+      },
+      "contrast_strategy": "น้ำเงินเข้มบนพื้นสว่างเป็นหลัก (dark-on-light dominant) แล้วสลับขั้วเป็นขาว/เหลืองบนน้ำเงินเข้มในแถบสถิติและริบบิ้น เพื่อสร้างจังหวะสายตาสลับสว่าง-เข้ม; ตัวอักษรไม่เคยวางทับส่วนที่รกที่สุดของภาพถ่าย แต่ใช้การไล่จางเป็นสีขาวเปิดพื้นที่ให้อ่านออก"
+    },
+
+    "typography": {
+      "type_scale": {
+        "display": { "size": "clamp(2.6rem, 6.2vw, 5.4rem)", "weight": "900", "line_height": "0.94", "tracking": "-0.02em" },
+        "heading_1": { "size": "clamp(2rem, 4.4vw, 3.4rem)", "weight": "900", "line_height": "1.0", "tracking": "-0.015em" },
+        "heading_2": { "size": "clamp(1.5rem, 3vw, 2.2rem)", "weight": "800", "line_height": "1.12", "tracking": "-0.01em" },
+        "heading_3": { "size": "1.25rem", "weight": "700", "line_height": "1.25", "tracking": "0em" },
+        "body": { "size": "1.05rem", "weight": "500", "line_height": "1.65", "tracking": "0em" },
+        "body_small": { "size": "0.92rem", "weight": "400", "line_height": "1.6", "tracking": "0.01em" },
+        "caption": { "size": "0.78rem", "weight": "500", "line_height": "1.4", "tracking": "0.02em" },
+        "overline": { "size": "0.64rem", "weight": "800", "line_height": "1.2", "tracking": "0.16em" }
+      },
+      "font_families": {
+        "heading": "Montserrat 900 Italic (ละติน) + Kanit 700–900 Italic (ไทย)",
+        "body": "Kanit 400–600",
+        "mono": "ui-monospace, 'JetBrains Mono', Menlo, monospace"
+      },
+      "font_style_notes": "จอโมทริกซานส์น้ำหนักหนักมาก เอียงจริงของฟอนต์ (ไม่ใช่บิด) ตัวอักษรใหญ่พิมพ์ใหญ่ทั้งหมด ระยะบรรทัดแน่นจนตัวอักษรเกือบชนกัน ให้ความรู้สึกโปสเตอร์กีฬา; ข้อความไทยใช้ฟอนต์เดียวกันตระกูล Kanit เพื่อให้เอียงเข้าชุดกับละติน; ตัวอักษรบนริบบิ้นเป็นพิมพ์ใหญ่เอียงคั่นด้วยจุดกลม"
+    },
+
+    "spacing": {
+      "base_unit": "8px",
+      "scale": ["4px", "8px", "12px", "16px", "24px", "32px", "48px", "64px", "96px"],
+      "content_density": "comfortable",
+      "section_rhythm": "บล็อกข้อความฝั่งซ้ายเว้นระยะสบายตา (24–32px ระหว่างหัวข้อ/ข้อความรอง/ปุ่ม) แต่แถบสถิติด้านล่างอัดแน่นเป็นแถบทึบสูงประมาณ 96px ตัดจังหวะให้รู้สึกหนักแน่น"
+    },
+
+    "layout": {
+      "grid_system": "asymmetric split — คอลัมน์ข้อความซ้ายประมาณ 42% ทับซ้อนกับภาพถ่ายเต็มพื้นที่ที่กินตั้งแต่กึ่งกลางไปจนสุดขอบขวา",
+      "max_content_width": "1220px สำหรับข้อความ แต่ภาพ แถบสถิติ และริบบิ้นเป็น full-bleed 100vw",
+      "columns": "12 (ข้อความกิน 5–6 คอลัมน์ซ้าย)",
+      "gutter": "24px",
+      "breakpoints": ["560px", "900px", "1300px"],
+      "alignment_tendency": "asymmetric — ชิดซ้ายเป็นหลัก ถ่วงด้วยมวลภาพฝั่งขวา และมีองค์ประกอบเฉียงตัดมุมล่างขวา"
+    },
+
+    "shape": {
+      "border_radius": {
+        "small": "8px",
+        "medium": "12px",
+        "large": "20px",
+        "pill": "999px"
+      },
+      "border_usage": "none — แทบไม่ใช้เส้นขอบเลย ใช้บล็อกสีทึบและช่องว่างแบ่งพื้นที่แทน",
+      "divider_style": "เส้นแนวตั้งบางสีขาวโปร่ง 15–20% คั่นระหว่างช่องสถิติเท่านั้น"
+    },
+
+    "elevation": {
+      "shadow_style": "soft diffused (ใช้น้อยมาก)",
+      "levels": {
+        "low": "0 4px 12px rgba(6,69,197,.12)",
+        "medium": "0 10px 24px rgba(255,196,0,.38) — ใช้กับปุ่ม CTA สีเหลืองให้ดูลอย",
+        "high": "0 18px 44px rgba(3,31,92,.28) — ใช้กับริบบิ้นเฉียงที่ทับบนภาพ"
+      },
+      "depth_cues": "การซ้อนทับของเลเยอร์ (ริบบิ้นทับภาพ, แถบสถิติทับขอบล่างภาพ, รูปทรงเฉียงทับขอบซ้าย) และความเข้มของสี — ไม่ได้พึ่งเงาเป็นหลัก"
+    },
+
+    "iconography": {
+      "style": "line-art เส้นเรียบ มุมมน วาดเป็นตราสัญลักษณ์ (เหรียญรางวัล, กลุ่มคน, โล่, ริบบิ้นรางวัล)",
+      "stroke_weight": "2px",
+      "size_scale": ["18px", "24px", "32px", "40px"],
+      "preferred_set": "custom SVG ในธีมรางวัล/ความสำเร็จ (ใกล้เคียง Lucide/Phosphor แบบเส้น)"
+    },
+
+    "motion": {
+      "easing": "cubic-bezier(.22,1,.36,1) — ออกเร็วเข้าช้า ให้ความรู้สึกกระฉับกระเฉงแต่นุ่มนวล",
+      "duration_scale": {
+        "micro": "180ms",
+        "normal": "320ms",
+        "macro": "900ms–1200ms (การเปลี่ยนสไลด์)"
+      },
+      "entrance_pattern": "ข้อความเลื่อนขึ้นพร้อมจางเข้าทีละบรรทัด; ตัวเลขสถิตินับขึ้นเมื่อเลื่อนมาถึง; ภาพค่อยๆ ซูมเข้าช้าๆ แบบ Ken Burns",
+      "exit_pattern": "จางออกอย่างเดียว ไม่มีการเลื่อนออก",
+      "philosophy": "playful but disciplined — เคลื่อนไหวเพื่อสร้างพลังงาน ไม่ใช่เพื่อโชว์เทคนิค ทุกการเคลื่อนไหวสั้นและมีจุดหมาย"
+    },
+
+    "components": {
+      "button_style": "ปุ่มหลักทรงแคปซูลสีเหลืองทึบ ตัวอักษรน้ำเงินเข้ม มีลูกศร → ต่อท้าย และเงาเหลืองนุ่ม; ปุ่มรองเป็นวงกลมโปร่งขอบบางพร้อมไอคอน ▶ วางคู่กับข้อความกำกับ",
+      "input_style": "ไม่ปรากฏในปก — ตามระบบคือช่องมุมมน 12px พื้นเทาอ่อน ไม่มีเส้นขอบหนา",
+      "card_style": "ไม่มีการ์ดในปก ใช้บล็อกสีทึบและริบบิ้นเฉียงแทน",
+      "navigation_pattern": "แถบเมนูโปร่งใสวางทับภาพ โลโก้ซ้าย เมนูกลาง ปุ่ม CTA เหลืองขวา ปิดท้ายด้วยปุ่มแฮมเบอร์เกอร์สี่เหลี่ยมมนสีน้ำเงิน; รายการที่ใช้งานอยู่มีขีดใต้สั้น",
+      "modal_style": "หน้าต่างวิดีโอเต็มจอ พื้นหลังทึบน้ำเงินเข้ม ปุ่มปิดมุมขวาบน",
+      "list_style": "รายการแนวนอนคั่นด้วยจุดกลม (•) ใช้บนริบบิ้น",
+      "component_notes": "ตัวชี้สไลด์เป็นชุดตัวเลข 01 02 03 โดยตัวที่ใช้งานอยู่เป็นน้ำเงินทึบมีขีดใต้ ส่วนที่เหลือเป็นเทาอ่อน มีปุ่มวงกลมน้ำเงินลูกศรย้อนกลับแทรกอยู่ — เป็นเอกลักษณ์ที่สำคัญของงานนี้ ไม่ใช่จุดกลมทั่วไป"
+    }
+  },
+
+  "design_style": {
+    "aesthetic": {
+      "mood": ["energetic", "optimistic", "confident", "friendly", "sunlit"],
+      "visual_metaphor": "โปสเตอร์แข่งกีฬาผสมโบรชัวร์ทัวร์องค์กร — เชือกชักเย่อทอดยาวคือเส้นนำสายตาที่สื่อถึง 'ดึงไปด้วยกัน'",
+      "era_influence": "โปสเตอร์กีฬายุค 2010s ผสมกราฟิกดิจิทัลไทยร่วมสมัย (ลายฮาล์ฟโทน, แถบเฉียง, ตัวอักษรเอียงหนา)",
+      "genre": "corporate event/activity agency — ลูกผสมระหว่าง SaaS landing page กับใบปลิวโปรโมชันท่องเที่ยว",
+      "personality_traits": ["กระตือรือร้น", "เข้าถึงง่าย", "น่าเชื่อถือ", "ตรงไปตรงมา", "ชอบสนุก"],
+      "adjectives": ["สดใส", "หนักแน่น", "เคลื่อนไหว", "อบอุ่น", "มืออาชีพ"]
+    },
+
+    "visual_language": {
+      "complexity": "rich",
+      "ornamentation": "decorative — ลายจุดฮาล์ฟโทน แถบเฉียง ริบบิ้น และรูปทรงเรขาคณิตที่ขอบ ทำงานพร้อมกันหลายชั้น",
+      "whitespace_usage": "ช่องว่างกระจุกอยู่รอบก้อนข้อความฝั่งซ้ายเท่านั้น ส่วนที่เหลือของเฟรมถูกเติมจนเต็มด้วยภาพและกราฟิก",
+      "visual_weight_distribution": "หนักซ้ายบน (หัวข้อ) และหนักล่าง (แถบสถิติ) ถ่วงด้วยมวลภาพคนฝั่งขวา — สมดุลแบบทแยงมุม",
+      "focal_strategy": "single hero element — หัวข้อสามบรรทัดคือจุดโฟกัสเดียว ทุกอย่างอื่นเป็นตัวประกอบ",
+      "contrast_level": "high",
+      "texture_usage": "ลายจุดฮาล์ฟโทนเป็นพื้นผิวหลัก ให้ความรู้สึกสิ่งพิมพ์; ภาพถ่ายให้พื้นผิวธรรมชาติ (ทราย ใบปาล์ม แสงแดด)"
+    },
+
+    "composition": {
+      "hierarchy_method": "scale contrast เป็นหลัก เสริมด้วย color weight (บรรทัดกลางเปลี่ยนเป็นสีเหลืองเพื่อดึงตา)",
+      "balance_type": "asymmetric",
+      "flow_direction": "ซ้ายบน → ขวาล่าง ตามแนวเชือกชักเย่อ แล้ววกกลับเข้าปุ่ม CTA และไหลลงสู่แถบสถิติ",
+      "grouping_strategy": "จัดกลุ่มด้วยความใกล้ชิด — หัวข้อ/ข้อความรอง/ปุ่ม เป็นก้อนเดียวชิดซ้าย; ตัวชี้สไลด์แยกออกไปมุมล่างซ้าย; ริบบิ้นจับคู่กันมุมล่างขวา",
+      "negative_space_role": "ทำหน้าที่เป็นเวทีให้ตัวอักษร — พื้นที่ขาวฝั่งซ้ายถูกสร้างขึ้นด้วยการไล่จางของภาพ ไม่ใช่พื้นที่ว่างจริง"
+    },
+
+    "imagery": {
+      "photo_treatment": "ภาพแคนดิดคนจริง สีสด อิ่มตัวสูง แสงแดดธรรมชาติ อุณหภูมิสีอุ่น ไล่จางเป็นสีขาวทางซ้ายเพื่อเปิดที่ให้ตัวอักษร ไม่มีการทับสีน้ำเงินทั้งภาพ",
+      "illustration_style": "ไม่ใช้ภาพวาด — ใช้รูปทรงเรขาคณิตแบนและลายจุดแทน",
+      "graphic_elements": ["แถบเฉียงมุมแหลม", "ริบบิ้นเอียงสองชั้น", "ลายจุดฮาล์ฟโทน", "เส้นคั่นแนวตั้งบางในแถบสถิติ", "ไอคอนเส้นสีเหลือง"],
+      "pattern_usage": "ลายจุดฮาล์ฟโทนไล่ขนาด วางที่มุมซ้ายบน ขอบซ้ายล่าง และหลังแถบสถิติ ใช้เป็นพื้นผิวเชื่อมกราฟิกกับภาพถ่าย",
+      "image_shape": "full-bleed ไม่มีกรอบ ไม่มีมุมโค้ง ตัดขอบตรงชนขอบจอ"
+    },
+
+    "interaction_feel": {
+      "feedback_style": "ตอบสนองชัดเจนทันที — ปุ่มยกตัวขึ้นพร้อมเงาเข้มขึ้น, รูปซูมเข้าเล็กน้อย",
+      "hover_behavior": "ยกขึ้น 2px + เข้มขึ้นสำหรับปุ่ม; ซูม 1.05–1.12 สำหรับภาพ; เมนูเปลี่ยนเป็นน้ำเงินพร้อมพื้นหลังจาง",
+      "transition_personality": "snappy — เร็ว กระชับ ไม่ยืดยาด",
+      "loading_style": "ภาพจางเข้าทีละใบ ไม่มีสปินเนอร์",
+      "microinteraction_density": "moderate — มีจุดที่ขยับพอให้รู้สึกมีชีวิต แต่ไม่ถึงกับเคลื่อนไหวตลอดเวลา"
+    },
+
+    "brand_voice_in_ui": {
+      "tone": "ชวนเชิญ เป็นกันเอง แต่ยังคงความน่าเชื่อถือขององค์กร",
+      "formality": "กึ่งทางการ — ใช้ภาษาพูดกับลูกค้าองค์กรแบบสุภาพ ไม่แข็งทื่อ",
+      "cta_style": "direct imperative — 'ดูโปรแกรมทั้งหมด' 'ขอใบเสนอราคา' สั้น ชัด บอกสิ่งที่จะได้",
+      "empty_state_approach": "ไม่ปรากฏในปก — ตามบุคลิกควรใช้ข้อความให้กำลังใจพร้อมปุ่มพาไปต่อ",
+      "error_tone": "สุภาพ ตรงประเด็น บอกวิธีแก้ทันที ไม่ตำหนิผู้ใช้"
+    }
+  },
+
+  "visual_effects": {
+    "overview": {
+      "effect_intensity": "moderate",
+      "performance_tier": "lightweight",
+      "fallback_strategy": "reduce to CSS — ปิดการเคลื่อนไหวทั้งหมดเมื่อผู้ใช้ตั้งค่า prefers-reduced-motion แล้วแสดงสไลด์แรกเป็นภาพนิ่ง",
+      "primary_technology": "CSS only (เสริมด้วย vanilla JS สำหรับสไลด์และตัวนับ)"
+    },
+
+    "background_effects": {
+      "type": "gradient-animation",
+      "description": "พื้นหลังไล่สีขาว→ฟ้าอ่อนนิ่งๆ ทับด้วยรูปทรงเรขาคณิตน้ำเงิน-เหลืองตัดเฉียงที่ขอบซ้าย และภาพถ่ายที่ไล่จางเข้าหาสีขาว จุดเด่นคือการซ้อนเลเยอร์ ไม่ใช่การเคลื่อนไหวของพื้นหลัง",
+      "technology": "CSS linear-gradient + clip-path polygon",
+      "params": {
+        "color_palette": ["#FFFFFF", "#F2F8FF", "#0645C5", "#062E9E", "#FFC400"],
+        "speed": "static (ไม่เคลื่อนไหว)",
+        "density": "low — รูปทรงใหญ่ไม่กี่ชิ้น",
+        "opacity": "1.0 สำหรับรูปทรงทึบ, 0.25–0.55 สำหรับลายจุด",
+        "blend_mode": "normal"
+      }
+    },
+
+    "particle_systems": {
+      "enabled": false,
+      "type": "none",
+      "description": "ไม่พบระบบพาร์ทิเคิลในปกนี้ — ความรู้สึกเคลื่อนไหวมาจากภาพถ่ายและรูปทรงเฉียงแทน",
+      "technology": "n/a",
+      "params": {
+        "count": "0",
+        "shape": "n/a",
+        "size_range": "n/a",
+        "movement_pattern": "n/a",
+        "color_behavior": "n/a",
+        "interaction": "none",
+        "spawn_area": "n/a"
+      }
+    },
+
+    "3d_elements": {
+      "enabled": false,
+      "type": "none",
+      "description": "ไม่มีวัตถุสามมิติ ความลึกทั้งหมดเกิดจากการซ้อนเลเยอร์แบนและมุมมองของภาพถ่าย",
+      "technology": "n/a",
+      "params": {
+        "renderer": "n/a",
+        "lighting": "n/a",
+        "camera": "n/a",
+        "materials": "n/a",
+        "geometry": "n/a",
+        "post_processing": "n/a",
+        "interaction_model": "none"
+      }
+    },
+
+    "shader_effects": {
+      "enabled": false,
+      "type": "none",
+      "description": "ไม่มีการใช้เชเดอร์ ลายจุดฮาล์ฟโทนทำด้วย radial-gradient ธรรมดา",
+      "technology": "n/a",
+      "params": {
+        "uniforms": "n/a",
+        "vertex_manipulation": "n/a",
+        "fragment_output": "n/a",
+        "noise_type": "n/a",
+        "distortion": "none"
+      }
+    },
+
+    "scroll_effects": {
+      "parallax": {
+        "enabled": true,
+        "layers": "2",
+        "depth_range": "แคบ — ภาพพื้นหลังเลื่อนช้ากว่าข้อความเล็กน้อยเท่านั้น",
+        "speed_curve": "linear"
+      },
+      "scroll_triggered_animations": {
+        "enabled": true,
+        "trigger_points": "เมื่อองค์ประกอบเข้ามาในจอประมาณ 12%",
+        "animation_type": "fade-up + counter (ตัวเลขสถิตินับขึ้น)",
+        "scrub_behavior": "trigger-once — เล่นครั้งเดียวแล้วหยุด ไม่ผูกกับตำแหน่งสกรอลล์"
+      },
+      "scroll_morphing": {
+        "enabled": false,
+        "description": "ไม่มีการเปลี่ยนรูปทรงตามการเลื่อนหน้าจอ"
+      }
+    },
+
+    "text_effects": {
+      "type": "none",
+      "description": "ตัวอักษรไม่มีเอฟเฟกต์พิเศษ พลังทั้งหมดมาจากน้ำหนักฟอนต์ ความเอียง และการสลับสีรายบรรทัด (น้ำเงิน/เหลือง/น้ำเงิน)",
+      "technology": "CSS",
+      "params": {
+        "split_strategy": "by-line",
+        "animation_per_unit": "fade-up ทีละบรรทัด หน่วงกันเล็กน้อย",
+        "stagger": "80ms",
+        "effect_style": "ตัวอักษรทึบ ไม่มีไล่สี ไม่มีเงา ไม่มีเส้นขอบ"
+      }
+    },
+
+    "cursor_effects": {
+      "enabled": false,
+      "type": "none",
+      "description": "ใช้เคอร์เซอร์มาตรฐานของระบบ ไม่มีเคอร์เซอร์กำหนดเองหรือรอยตาม",
+      "params": {
+        "shape": "n/a",
+        "size": "n/a",
+        "blend_mode": "n/a",
+        "trail": "none",
+        "interaction_zone": "n/a"
+      }
+    },
+
+    "image_effects": {
+      "type": "reveal-clip",
+      "description": "ภาพในสไลด์ค่อยๆ ซูมเข้าแบบ Ken Burns ระหว่างแสดงผล และสลับสไลด์ด้วยการจางข้ามกัน; ขอบซ้ายของภาพถูกไล่จางเป็นสีขาวด้วยมาสก์ไล่ระดับ",
+      "technology": "CSS transform + opacity transition + mask-image",
+      "params": {
+        "filter_pipeline": ["saturate(1.05)", "ไม่มีการทับสี"],
+        "hover_transform": "scale(1.05) สำหรับภาพในกริดอื่น; ภาพปกไม่ตอบสนองการชี้เมาส์",
+        "reveal_animation": "cross-fade 1200ms ระหว่างสไลด์",
+        "distortion_type": "none"
+      }
+    },
+
+    "glassmorphism_neumorphism": {
+      "enabled": false,
+      "style": "none",
+      "params": {
+        "blur_radius": "n/a",
+        "transparency": "หัวเว็บโปร่งใสจริง (ไม่ได้เบลอพื้นหลัง) จนกว่าจะเลื่อนลงแล้วเปลี่ยนเป็นพื้นขาวทึบ",
+        "border_treatment": "none",
+        "shadow_type": "n/a",
+        "light_source_angle": "n/a"
+      }
+    },
+
+    "canvas_drawings": {
+      "enabled": false,
+      "type": "none",
+      "description": "ปกนี้ไม่ใช้ canvas — ลายจุดและรูปทรงทั้งหมดทำด้วย CSS ล้วน",
+      "technology": "n/a",
+      "params": {
+        "draw_method": "n/a",
+        "animation_loop": "n/a",
+        "color_scheme": "n/a",
+        "responsiveness": "n/a",
+        "interaction": "none"
+      }
+    },
+
+    "svg_animations": {
+      "enabled": true,
+      "type": "decorative-loop",
+      "description": "ไอคอนเส้นสีเหลืองในแถบสถิติเป็น SVG นิ่ง แต่มีจังหวะปรากฏพร้อมตัวเลขที่นับขึ้น ทำให้รู้สึกว่ามีการเคลื่อนไหว",
+      "params": {
+        "animation_method": "CSS transition บน opacity/transform (ไม่ใช้ SMIL)",
+        "path_morphing": "none",
+        "stroke_animation": "none",
+        "filter_effects": "none"
+      }
+    },
+
+    "composite_notes": "หัวใจของงานนี้คือ 'การซ้อนเลเยอร์แบน' ไม่ใช่เอฟเฟกต์หนักๆ — ลำดับชั้นจากหลังไปหน้าคือ (1) พื้นไล่สีขาว-ฟ้า (2) ภาพถ่ายเต็มพื้นที่ที่มาสก์ไล่จางทางซ้าย (3) ลายจุดฮาล์ฟโทน (4) รูปทรงเรขาคณิตน้ำเงิน-เหลืองที่ขอบซ้าย (5) ริบบิ้นเฉียงสองชั้นมุมล่างขวา (6) ก้อนข้อความ (7) แถบสถิติที่ทับขอบล่างของภาพ. องค์ประกอบที่คนมักทำพลาดคือมุมเอียงของริบบิ้น — ต้องเอียงประมาณ -3.5° ทั้งคู่แต่เหลื่อมกัน ไม่ใช่ขนานกันพอดี. ตัวชี้สไลด์แบบตัวเลข 01/02/03 พร้อมปุ่มวงกลมย้อนกลับ เป็นเอกลักษณ์เฉพาะที่ไม่ควรแทนด้วยจุดกลมทั่วไป. ทั้งหมดทำได้ด้วย CSS ล้วน ไม่ต้องใช้ WebGL หรือไลบรารีอนิเมชันใดๆ จึงเบาและรองรับมือถือได้ดี"
+  }
+}
