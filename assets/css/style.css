@@ -904,3 +904,20 @@ body.ed-on .port:hover img{transform:none}
   .cr-stage img{max-height:44vh}
   .cr-foot .cr-btn{flex:1}
 }
+
+/* ---------- หน้าบทความ: เรียง 2 คอลัมน์ ---------- */
+.blog-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:30px;align-items:start}
+.blog-card{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;height:100%;transition:.3s cubic-bezier(.22,1,.36,1)}
+.blog-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(6,69,197,.25)}
+.blog-cover{height:230px;background-size:cover;background-position:center;position:relative;flex:0 0 auto}
+.blog-cover .prog-tag{position:absolute;top:16px;left:16px}
+.blog-body{padding:26px;display:flex;flex-direction:column;flex:1}
+.blog-title{font-size:1.25rem;color:var(--blue-deep);margin-bottom:12px;font-weight:700;line-height:1.35}
+.blog-excerpt{color:var(--ink);font-weight:500;font-size:1rem;margin:0 0 14px;line-height:1.6}
+.blog-text{color:var(--muted);line-height:1.8;font-size:.95rem;margin:0}
+@media(max-width:860px){
+  .blog-grid{grid-template-columns:1fr;gap:24px}
+  .blog-cover{height:200px}
+  .blog-body{padding:22px}
+}

@@ -433,15 +433,15 @@
     blogFull(sel) {
       const el = document.querySelector(sel); if (!el) return;
       el.innerHTML = S.blog.map((b, i) => `
-        <article class="reveal" id="${esc(b.id)}" style="background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;margin-bottom:28px;box-shadow:var(--shadow)">
-          <div style="height:260px;background-image:url('${esc(b.img)}');background-size:cover;background-position:center;position:relative" data-edit-bg="blog.${i}.img">
-            <span class="prog-tag" style="position:absolute;top:16px;left:16px" data-edit="blog.${i}.cat">${esc(b.cat)}</span>
+        <article class="blog-card reveal" id="${esc(b.id)}">
+          <div class="blog-cover" style="background-image:url('${esc(b.img)}')" data-edit-bg="blog.${i}.img">
+            <span class="prog-tag" data-edit="blog.${i}.cat">${esc(b.cat)}</span>
           </div>
-          <div style="padding:28px">
+          <div class="blog-body">
             <div class="section-kicker">🗓️ <span data-edit="blog.${i}.date">${esc(b.date)}</span></div>
-            <h2 style="font-size:1.4rem;color:var(--blue-deep);margin-bottom:12px;font-weight:700" data-edit="blog.${i}.title">${esc(b.title)}</h2>
-            <p class="lead" style="margin-bottom:14px;color:var(--ink);font-weight:500"><b data-edit="blog.${i}.excerpt">${esc(b.excerpt)}</b></p>
-            <p style="color:var(--muted);line-height:1.8" data-edit="blog.${i}.body">${esc(b.body)}</p>
+            <h2 class="blog-title" data-edit="blog.${i}.title">${esc(b.title)}</h2>
+            <p class="blog-excerpt"><b data-edit="blog.${i}.excerpt">${esc(b.excerpt)}</b></p>
+            <p class="blog-text" data-edit="blog.${i}.body">${esc(b.body)}</p>
           </div>
         </article>`).join("");
     },
