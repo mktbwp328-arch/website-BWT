@@ -1,6 +1,6 @@
 /* ============================================================
    BW Training — ระบบหลังบ้าน (แก้ไขเนื้อหาเว็บไซต์)
-   เก็บข้อมูลใน localStorage ของเบราว์เซอร์ + ส่งออก/นำเข้าไฟล์ JSON
+   บันทึกขึ้นฐานข้อมูล Supabase และเก็บสำเนาไว้ในเบราว์เซอร์เครื่องนี้
    ============================================================ */
 (function () {
   "use strict";
@@ -292,7 +292,7 @@
           <ol style="color:var(--muted);font-size:.88rem;margin-top:8px;padding-left:20px">
             <li>แก้ไขข้อมูลในแท็บต่างๆ แล้วกด <b>💾 บันทึกทั้งหมด</b> ที่มุมขวาบน</li>
             <li>กดบันทึกแล้วเนื้อหาจะขึ้นฐานข้อมูล ทุกเครื่องเห็นตรงกันทันที</li>
-            <li><b>⬇ ส่งออก JSON</b> ใช้เก็บสำรองไว้ · <b>⬆ นำเข้า JSON</b> ใช้กู้คืนจากไฟล์สำรอง</li>
+            <li>หรือกด <b>✏️ แก้ไขที่หน้าเว็บ</b> เพื่อแก้ข้อความและรูปบนหน้าเว็บจริงได้โดยตรง</li>
           </ol></div>
         <div class="item"><b>ความปลอดภัย</b>
           <p style="color:var(--muted);font-size:.88rem;margin:6px 0 0">รหัสผ่านนี้เป็นการป้องกันเบื้องต้นฝั่งหน้าเว็บเท่านั้น
@@ -577,25 +577,6 @@
     } catch (err) {
       toast("บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลในเบราว์เซอร์เต็ม ลองลดจำนวนรูปที่อัปโหลด", true);
     }
-  });
-  $("#exportBtn").addEventListener("click", () => {
-    collect(); dl(new Blob([JSON.stringify(D, null, 2)], { type: "application/json" }), "bwt-content.json");
-  });
-  $("#importBtn").addEventListener("click", () => $("#fileIn").click());
-  $("#fileIn").addEventListener("change", e => {
-    const f = e.target.files[0]; if (!f) return;
-    const r = new FileReader();
-    r.onload = () => {
-      try {
-        D = Object.assign(JSON.parse(JSON.stringify(window.BWT_DEFAULT)), JSON.parse(r.result));
-        localStorage.setItem(LS_SITE, JSON.stringify(D)); build(); toast("นำเข้าข้อมูลเรียบร้อย");
-      } catch (err) { toast("ไฟล์ไม่ถูกต้อง", true); }
-    };
-    r.readAsText(f);
-  });
-  $("#resetBtn").addEventListener("click", () => {
-    if (!confirm("คืนค่าเนื้อหาทั้งหมดกลับเป็นค่าเริ่มต้น?")) return;
-    localStorage.removeItem(LS_SITE); D = load(); build(); toast("คืนค่าเริ่มต้นแล้ว");
   });
 
   /* เข้าสู่ระบบอัตโนมัติถ้าล็อกอินไว้แล้วใน session นี้ (ต้องอยู่ท้ายไฟล์ หลังประกาศตัวแปรทั้งหมด) */
