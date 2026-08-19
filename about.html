@@ -13,7 +13,7 @@
 <meta property="og:title" content="เกี่ยวกับเรา | BW Training">
 <meta property="og:description" content="ทีมงานมืออาชีพด้านกิจกรรมองค์กร ประสบการณ์กว่า 10 ปี ให้บริการทั่วประเทศไทย">
 <link rel="icon" href="assets/img/logo.png" type="image/png">
-<link rel="stylesheet" href="assets/css/style.css?v=202608192140">
+<link rel="stylesheet" href="assets/css/style.css?v=202608192320">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"AboutPage","name":"เกี่ยวกับ BW Training",
 "url":"https://www.bwtraining.co.th/about.html","inLanguage":"th",
@@ -30,8 +30,8 @@
 
 <section class="page-hero">
   <div class="container">
-    <h1>ABOUT BW TRAINING</h1>
-    <div class="th">เกี่ยวกับเรา</div>
+    <h1 id="abHeroEn"></h1>
+    <div class="th" id="abHeroTh"></div>
     <div class="crumb"><a href="index.html">หน้าแรก</a> / เกี่ยวกับเรา</div>
   </div>
 </section>
@@ -40,16 +40,14 @@
 
 <section>
   <div class="container grid-2" style="gap:44px;align-items:center">
-    <div class="g1 reveal" style="min-height:400px;border-radius:24px"></div>
+    <div class="g1 reveal" id="abImg" data-edit-bg="about.img"
+         style="min-height:400px;border-radius:24px;background-size:cover;background-position:center"></div>
     <div>
-      <div class="section-kicker">WHO WE ARE</div>
-      <h2 class="section-title" style="font-size:clamp(1.4rem,3vw,2.1rem)" id="aboutHead"></h2>
-      <p class="lead" id="aboutBody"></p>
+      <div class="section-kicker" id="abKicker" data-edit="about.kicker"></div>
+      <h2 class="section-title" style="font-size:clamp(1.4rem,3vw,2.1rem)" id="aboutHead" data-edit="about.headline"></h2>
+      <p class="lead" id="aboutBody" data-edit="about.body"></p>
       <ul class="check-list" id="aboutPoints" style="margin-top:20px"></ul>
-      <div class="pill-row">
-        <span class="pill">👨‍🏫 ทีมงานมืออาชีพ</span><span class="pill">🗓️ โปรแกรมหลากหลาย</span>
-        <span class="pill">🛡️ ความปลอดภัยอันดับ 1</span><span class="pill">😊 ประกันใจไม่รู้ลืม</span>
-      </div>
+      <div class="pill-row" id="abPills"></div>
     </div>
   </div>
 </section>
@@ -57,8 +55,8 @@
 <section class="sec-paper">
   <div class="container">
     <div class="sec-head center">
-      <div class="section-kicker">OUR JOURNEY</div>
-      <h2 class="section-title">เส้นทางของเรา</h2>
+      <div class="section-kicker" id="abTlKicker" data-edit="about.timelineKicker"></div>
+      <h2 class="section-title" id="abTlTitle" data-edit="about.timelineTitle"></h2>
     </div>
     <div class="grid-services" id="timeline"></div>
   </div>
@@ -67,58 +65,74 @@
 <section>
   <div class="container">
     <div class="sec-head center">
-      <div class="section-kicker">OUR VALUES</div>
-      <h2 class="section-title">สิ่งที่เรายึดถือ</h2>
+      <div class="section-kicker" id="abValKicker" data-edit="about.valuesKicker"></div>
+      <h2 class="section-title" id="abValTitle" data-edit="about.valuesTitle"></h2>
     </div>
-    <div class="grid-3">
-      <div class="prog reveal" style="padding:28px"><div style="font-size:2rem">🎯</div>
-        <h3 style="color:var(--blue);font-family:var(--head-en);font-weight:900">PURPOSE FIRST</h3>
-        <p style="color:var(--muted);margin:0">ทุกกิจกรรมเริ่มจากเป้าหมายขององค์กร ไม่ใช่เริ่มจากเกม เพื่อให้เกิดผลลัพธ์ที่วัดได้จริง</p></div>
-      <div class="prog reveal" style="padding:28px"><div style="font-size:2rem">🛡️</div>
-        <h3 style="color:var(--blue);font-family:var(--head-en);font-weight:900">SAFETY ALWAYS</h3>
-        <p style="color:var(--muted);margin:0">อุปกรณ์ได้มาตรฐาน ทีมงานผ่านการอบรมปฐมพยาบาล และมีประกันอุบัติเหตุกลุ่มทุกงาน</p></div>
-      <div class="prog reveal" style="padding:28px"><div style="font-size:2rem">🎉</div>
-        <h3 style="color:var(--blue);font-family:var(--head-en);font-weight:900">FUN THAT LASTS</h3>
-        <p style="color:var(--muted);margin:0">สนุกในวันงาน และทิ้งความทรงจำดีๆ ที่ทีมพูดถึงกันต่อไปอีกนาน</p></div>
+    <div class="grid-3" id="abValues">
     </div>
   </div>
 </section>
 
 <section class="sec-review">
   <div class="container">
-    <div class="sec-head center"><div class="section-kicker">TESTIMONIALS</div>
-      <h2 class="section-title">เสียงจากลูกค้า</h2></div>
+    <div class="sec-head center"><div class="section-kicker" id="abRvKicker" data-edit="about.reviewKicker"></div>
+      <h2 class="section-title" id="abRvTitle" data-edit="about.reviewTitle"></h2></div>
     <div class="grid-3" id="tstGrid"></div>
   </div>
 </section>
 
 <section>
   <div class="container"><div class="cta-band">
-    <div><h3>อยากรู้ว่าเราจัดให้ทีมคุณได้แบบไหน?</h3>
-      <p style="margin:6px 0 0;color:rgba(255,255,255,.9)">ปรึกษาฟรี ทีมงานตอบกลับภายใน 24 ชั่วโมง</p></div>
-    <a class="btn btn-yellow btn-lg" href="quote.html">ขอใบเสนอราคา <span class="arw">→</span></a>
+    <div><h3 id="abCtaTitle" data-edit="about.ctaTitle"></h3>
+      <p style="margin:6px 0 0;color:rgba(255,255,255,.9)" id="abCtaDesc" data-edit="about.ctaDesc"></p></div>
+    <a class="btn btn-yellow btn-lg" href="quote.html"><span id="abCtaBtn" data-edit="about.ctaBtn"></span> <span class="arw">→</span></a>
   </div></div>
 </section>
 
 <div id="site-footer"></div>
-<script src="assets/js/supabase.js?v=202608192140"></script>
-<script src="assets/js/data.js?v=202608192140"></script>
+<script src="assets/js/supabase.js?v=202608192320"></script>
+<script src="assets/js/data.js?v=202608192320"></script>
 <script>
 window.pageInit = function (R, S) {
+  const a = S.about, q = id => document.getElementById(id);
+  const put = (id, v) => { const el = q(id); if (el) el.textContent = v || ""; };
+
   R.stats("#statGrid"); R.testimonials("#tstGrid");
-  document.getElementById("aboutHead").textContent = S.about.headline;
-  document.getElementById("aboutBody").textContent = S.about.body;
-  document.getElementById("aboutPoints").innerHTML = S.about.points.map(p => `<li><span class="tick">✓</span>${p}</li>`).join("");
-  document.getElementById("timeline").innerHTML = S.about.timeline.map(t => `
+
+  put("abHeroEn", a.heroEn); put("abHeroTh", a.heroTh);
+  put("abKicker", a.kicker); put("aboutHead", a.headline); put("aboutBody", a.body);
+  put("abTlKicker", a.timelineKicker); put("abTlTitle", a.timelineTitle);
+  put("abValKicker", a.valuesKicker); put("abValTitle", a.valuesTitle);
+  put("abRvKicker", a.reviewKicker); put("abRvTitle", a.reviewTitle);
+  put("abCtaTitle", a.ctaTitle); put("abCtaDesc", a.ctaDesc); put("abCtaBtn", a.ctaBtn);
+
+  if (q("abImg") && a.img) q("abImg").style.backgroundImage = `url('${a.img}')`;
+
+  q("aboutPoints").innerHTML = a.points.map((p, i) =>
+    `<li><span class="tick">✓</span><span data-edit="about.points.${i}">${p}</span></li>`).join("");
+
+  q("abPills").innerHTML = (a.pills || []).map((p, i) =>
+    `<span class="pill"><span data-edit="about.pills.${i}.ico">${p.ico}</span>
+      <span data-edit="about.pills.${i}.text">${p.text}</span></span>`).join("");
+
+  q("timeline").innerHTML = a.timeline.map((t, i) => `
     <div class="svc reveal" style="padding:24px">
-      <div class="price" style="font-size:2rem">${t.y}</div>
-      <h3 style="margin:6px 0 6px;font-size:1rem">${t.t}</h3>
-      <p style="color:var(--muted);font-size:.88rem;margin:0">${t.d}</p>
+      <div class="price" style="font-size:2rem" data-edit="about.timeline.${i}.y">${t.y}</div>
+      <h3 style="margin:6px 0 6px;font-size:1rem" data-edit="about.timeline.${i}.t">${t.t}</h3>
+      <p style="color:var(--muted);font-size:.88rem;margin:0" data-edit="about.timeline.${i}.d">${t.d}</p>
+    </div>`).join("");
+
+  q("abValues").innerHTML = (a.values || []).map((v, i) => `
+    <div class="prog reveal" style="padding:28px">
+      <div style="font-size:2rem" data-edit="about.values.${i}.ico">${v.ico}</div>
+      <h3 style="color:var(--blue);font-family:var(--head-en);font-weight:900"
+          data-edit="about.values.${i}.title">${v.title}</h3>
+      <p style="color:var(--muted);margin:0" data-edit="about.values.${i}.desc">${v.desc}</p>
     </div>`).join("");
 };
 </script>
-<script src="assets/js/main.js?v=202608192140"></script>
-<script src="assets/js/cropper.js?v=202608192140"></script>
-<script src="assets/js/edit.js?v=202608192140"></script>
+<script src="assets/js/main.js?v=202608192320"></script>
+<script src="assets/js/cropper.js?v=202608192320"></script>
+<script src="assets/js/edit.js?v=202608192320"></script>
 </body>
 </html>

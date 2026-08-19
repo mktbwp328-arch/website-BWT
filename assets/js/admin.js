@@ -43,7 +43,7 @@
     ["company", "🏢 ข้อมูลบริษัท"], ["hero", "🎬 แบนเนอร์หน้าแรก"], ["stats", "📊 ตัวเลขสถิติ"],
     ["expertise", "⭐ แถบความเชี่ยวชาญ"], ["intro", "📰 บทความแนะนำบริษัท"], ["services", "🧩 บริการ (7 หมวด)"], ["portfolio", "🖼 ผลงาน"],
     ["clients", "🤝 ลูกค้า"], ["testimonials", "💬 รีวิวลูกค้า"], ["blog", "📝 บทความ"],
-    ["faq", "❓ คำถามที่พบบ่อย"], ["about", "ℹ️ เกี่ยวกับเรา"], ["seo", "🔍 SEO"],
+    ["faq", "❓ คำถามที่พบบ่อย"], ["about", "ℹ️ หน้าเกี่ยวกับเรา"], ["seo", "🔍 SEO"],
     ["leads", "📥 ใบขอเสนอราคา"], ["settings", "⚙️ ตั้งค่า"]
   ];
 
@@ -214,14 +214,40 @@
     },
     about() {
       const a = D.about;
-      return head("เกี่ยวกับเรา", "ข้อความและไทม์ไลน์ในหน้าเกี่ยวกับเรา") + `
+      return head("หน้าเกี่ยวกับเรา", "แก้ได้ทุกส่วนของหน้า about.html — หัวหน้า เนื้อหา รูป ป้าย ไทม์ไลน์ ค่านิยม และแถบชวนติดต่อ") + `
+        <h3 style="margin-top:4px;font-size:1rem">แถบหัวหน้า</h3>
+        <div class="row">${fld("หัวใหญ่ (อังกฤษ)", "about.heroEn", a.heroEn || "")}${fld("ข้อความไทยใต้หัวใหญ่", "about.heroTh", a.heroTh || "")}</div>
+
+        <h3 style="margin-top:18px;font-size:1rem">ส่วนแนะนำบริษัท</h3>
+        <div class="row one">${fld("รูปด้านซ้าย", "about.img", a.img || "", "img")}</div>
+        <div class="row one">${fld("ป้ายเล็กเหนือหัวข้อ", "about.kicker", a.kicker || "")}</div>
         <div class="row one">${fld("หัวข้อ", "about.headline", a.headline)}</div>
         <div class="row one">${fld("เนื้อหา", "about.body", a.body, "textarea")}</div>
         <div class="row one">${fld("จุดเด่น (คั่นบรรทัดละ 1 ข้อ)", "about.points", a.points.join("\n"), "textarea")}</div>
-        <h3 style="margin-top:18px;font-size:1rem">ไทม์ไลน์</h3>
+
+        <h3 style="margin-top:18px;font-size:1rem">ป้ายเล็กใต้จุดเด่น</h3>
+        ${listBlock("about.pills", "เพิ่มป้าย", (a.pills || []).map((p, i) => itemBox("about.pills", i,
+          `<div class="row">${fld("ไอคอน (อีโมจิ)", `about.pills.${i}.ico`, p.ico)}${fld("ข้อความ", `about.pills.${i}.text`, p.text)}</div>`)).join(""))}
+
+        <h3 style="margin-top:18px;font-size:1rem">ไทม์ไลน์ “เส้นทางของเรา”</h3>
+        <div class="row">${fld("ป้ายเล็ก", "about.timelineKicker", a.timelineKicker || "")}${fld("หัวข้อ", "about.timelineTitle", a.timelineTitle || "")}</div>
         ${listBlock("about.timeline", "เพิ่มช่วงเวลา", a.timeline.map((t, i) => itemBox("about.timeline", i,
           `<div class="row">${fld("ปี", `about.timeline.${i}.y`, t.y)}${fld("หัวข้อ", `about.timeline.${i}.t`, t.t)}</div>
-           <div class="row one">${fld("รายละเอียด", `about.timeline.${i}.d`, t.d, "textarea")}</div>`)).join(""))}`;
+           <div class="row one">${fld("รายละเอียด", `about.timeline.${i}.d`, t.d, "textarea")}</div>`)).join(""))}
+
+        <h3 style="margin-top:18px;font-size:1rem">ค่านิยม “สิ่งที่เรายึดถือ”</h3>
+        <div class="row">${fld("ป้ายเล็ก", "about.valuesKicker", a.valuesKicker || "")}${fld("หัวข้อ", "about.valuesTitle", a.valuesTitle || "")}</div>
+        ${listBlock("about.values", "เพิ่มค่านิยม", (a.values || []).map((v, i) => itemBox("about.values", i,
+          `<div class="row">${fld("ไอคอน (อีโมจิ)", `about.values.${i}.ico`, v.ico)}${fld("หัวข้อ", `about.values.${i}.title`, v.title)}</div>
+           <div class="row one">${fld("รายละเอียด", `about.values.${i}.desc`, v.desc, "textarea")}</div>`)).join(""))}
+
+        <h3 style="margin-top:18px;font-size:1rem">หัวข้อส่วนรีวิว</h3>
+        <div class="row">${fld("ป้ายเล็ก", "about.reviewKicker", a.reviewKicker || "")}${fld("หัวข้อ", "about.reviewTitle", a.reviewTitle || "")}</div>
+        <p class="hint">ข้อความรีวิวแก้ที่แท็บ 💬 รีวิวลูกค้า</p>
+
+        <h3 style="margin-top:18px;font-size:1rem">แถบชวนติดต่อท้ายหน้า</h3>
+        <div class="row one">${fld("หัวข้อ", "about.ctaTitle", a.ctaTitle || "")}</div>
+        <div class="row">${fld("คำอธิบาย", "about.ctaDesc", a.ctaDesc || "")}${fld("ข้อความบนปุ่ม", "about.ctaBtn", a.ctaBtn || "")}</div>`;
     },
     seo() {
       const s = D.seo;
@@ -330,6 +356,8 @@
     blog: { id: "b" + Date.now(), css: "g1", date: new Date().toISOString().slice(0, 10), cat: "ทั่วไป", title: "บทความใหม่", excerpt: "", body: "" },
     faq: { q: "คำถามใหม่", a: "" },
     "about.timeline": { y: "2569", t: "", d: "" },
+    "about.pills": { ico: "✨", text: "จุดเด่นใหม่" },
+    "about.values": { ico: "🎯", title: "หัวข้อใหม่", desc: "" },
     "intro.gallery": { img: "", alt: "" },
     "expertise.pills": { ico: "✨", text: "จุดเด่นใหม่" }
   };
