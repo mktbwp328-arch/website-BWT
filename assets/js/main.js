@@ -13,6 +13,62 @@
     youtube: svg('<path d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42A2.5 2.5 0 0 0 2.42 7.2 26.2 26.2 0 0 0 2 12a26.2 26.2 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26.2 26.2 0 0 0 22 12a26.2 26.2 0 0 0-.42-4.81ZM10 15.11V8.89L15.2 12 10 15.11Z"/>')
   };
 
+  /* ---------- สลับภาษา ไทย / อังกฤษ ----------
+     วิธีทำงาน: หน้าเว็บวาดด้วยภาษาไทยตามปกติก่อนเสมอ
+     ถ้าผู้ใช้เลือก EN จะไล่เปลี่ยนข้อความที่มีคำแปลใน i18n.js ให้เป็นอังกฤษ
+     ข้อความที่ยังไม่มีคำแปลจะคงเป็นไทย — ไม่หายและไม่พัง */
+  const LS_LANG = "bwt_lang";
+  function getLang() {
+    try { return localStorage.getItem(LS_LANG) === "en" ? "en" : "th"; } catch (e) { return "th"; }
+  }
+  function setLang(v) {
+    try { localStorage.setItem(LS_LANG, v); } catch (e) { }
+    location.reload();
+  }
+
+  const norm = s => String(s == null ? "" : s).replace(/\s+/g, " ").trim();
+
+  function translate(root) {
+    if (getLang() !== "en" || !window.BWT_I18N || !window.BWT_I18N.en) return;
+    const dict = window.BWT_I18N.en;
+    const scope = root || document.body;
+
+    // 1) ทั้งก้อน (เผื่อข้อความมีตัวหนาหรือขีดคั่นอยู่ข้างใน)
+    scope.querySelectorAll("h1,h2,h3,h4,p,li,span,a,div,figcaption,label,option,button").forEach(el => {
+      if (el.dataset.i18nDone === "1") return;
+      const t = dict[norm(el.innerHTML)];
+      if (t !== undefined) { el.innerHTML = t; el.dataset.i18nDone = "1"; }
+    });
+
+    // 2) ทีละข้อความ (กรณีที่ข้อความปนอยู่กับแท็บอื่น)
+    const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => (n.parentElement && /SCRIPT|STYLE|TEXTAREA/.test(n.parentElement.tagName))
+        ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+    });
+    const nodes = [];
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
+    nodes.forEach(n => {
+      const t = dict[norm(n.nodeValue)];
+      if (t !== undefined) n.nodeValue = n.nodeValue.replace(norm(n.nodeValue), t);
+    });
+
+    // 3) ข้อความในแอตทริบิวต์
+    ["placeholder", "alt", "aria-label", "title", "value"].forEach(a => {
+      scope.querySelectorAll("[" + a + "]").forEach(el => {
+        if (a === "value" && el.tagName !== "INPUT") return;
+        const t = dict[norm(el.getAttribute(a))];
+        if (t !== undefined) el.setAttribute(a, t);
+      });
+    });
+
+    // 4) ชื่อหน้าและภาษาของเอกสาร
+    if (!root) {
+      const t = dict[norm(document.title)];
+      if (t !== undefined) document.title = t;
+      document.documentElement.setAttribute("lang", "en");
+    }
+  }
+
   /* ---------- data layer ---------- */
   const LS_SITE = "bwt_site_v1";
   const LS_LEADS = "bwt_leads_v1";
@@ -53,7 +109,8 @@
     reset() { localStorage.removeItem(LS_SITE); },
     leads() { try { return JSON.parse(localStorage.getItem(LS_LEADS) || "[]"); } catch (e) { return []; } },
     saveLeads(a) { localStorage.setItem(LS_LEADS, JSON.stringify(a)); },
-    LS_SITE, LS_LEADS
+    LS_SITE, LS_LEADS,
+    lang: getLang, setLang, translate
   };
 
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
@@ -101,6 +158,10 @@
               ${NAV.map(([h, th]) => `<li><a href="${h}" class="${h === page ? "active" : ""}">${th}</a></li>`).join("")}
             </ul>
             <div class="nav-cta">
+              <div class="lang-switch" role="group" aria-label="เปลี่ยนภาษา / Change language">
+                <button type="button" data-lang="th" class="${getLang() === "th" ? "on" : ""}">TH</button>
+                <button type="button" data-lang="en" class="${getLang() === "en" ? "on" : ""}">EN</button>
+              </div>
               <a class="btn btn-yellow" href="quote.html">ขอใบเสนอราคา <span class="arw">→</span></a>
               <button class="burger" id="burger" aria-label="เปิดเมนู">☰</button>
             </div>
@@ -117,6 +178,10 @@
     menu.addEventListener("click", e => { if (e.target.tagName === "A") { menu.classList.remove("open"); burger.textContent = "☰"; } });
     const head = document.getElementById("stickyHead");
     addEventListener("scroll", () => head.classList.toggle("scrolled", scrollY > 12), { passive: true });
+
+    host.querySelectorAll(".lang-switch button").forEach(b => {
+      b.addEventListener("click", () => { if (b.dataset.lang !== getLang()) setLang(b.dataset.lang); });
+    });
   }
 
   function renderFooter() {
@@ -517,7 +582,7 @@
       Object.keys(remote).forEach(k => { S[k] = remote[k]; });
       renderHeader(); renderFooter(); R.heroText();
       if (typeof window.pageInit === "function") window.pageInit(R, S);
-      applyPageText(); reveals(); counters();
+      applyPageText(); translate(); reveals(); counters();
     } catch (e) {
       // ออฟไลน์ / ยังไม่ได้ตั้งตาราง — ใช้เนื้อหาในเครื่องต่อไป
       console.warn("ซิงก์เนื้อหาจาก Supabase ไม่สำเร็จ:", e.message);
@@ -646,6 +711,7 @@
     heroSlider(); confetti(); R.heroText();
     if (typeof window.pageInit === "function") window.pageInit(R, S);
     applyPageText();
+    translate();
     syncFromDb().finally(() => syncDone());
     reveals(); counters(); filters(); videoModal(); forms();
   }
