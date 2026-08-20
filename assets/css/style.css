@@ -651,6 +651,12 @@ body.ed-on .im-item[data-slot]::after{
 
 /* ---------- Clients ---------- */
 .grid-clients{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+/* จอมือถือ: ลดความกว้างขั้นต่ำลง เพื่อให้ได้ 2 ช่องต่อแถวแทนที่จะเหลือช่องเดียว */
+@media(max-width:560px){
+  .grid-clients{grid-template-columns:repeat(2,1fr);gap:12px}
+  .client{min-height:92px;padding:10px}
+  .client img{max-height:56px}
+}
 .client{
   background:#fff;border:1px solid var(--line);border-radius:var(--radius);min-height:110px;
   display:grid;place-items:center;padding:14px;transition:.25s;text-align:center;
@@ -917,9 +923,12 @@ body.ed-on .port:hover img{transform:none}
 .blog-excerpt{color:var(--ink);font-weight:500;font-size:1rem;margin:0 0 14px;line-height:1.6}
 .blog-text{color:var(--muted);line-height:1.8;font-size:.95rem;margin:0}
 @media(max-width:860px){
-  .blog-grid{grid-template-columns:1fr;gap:24px}
+  .blog-grid{gap:24px}
   .blog-cover{height:200px}
   .blog-body{padding:22px}
+}
+@media(max-width:640px){
+  .blog-grid{grid-template-columns:1fr}
 }
 
 /* ---------- ปุ่มสลับภาษา (ปุ่มเดียว ลูกโลก + ภาษาที่จะสลับไป) ---------- */
@@ -936,4 +945,77 @@ body.ed-on .port:hover img{transform:none}
 body.home .site-header:not(.scrolled) .lang-switch{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.92)}
 @media(max-width:1080px){
   .lang-switch{margin-right:2px;padding:8px 13px 8px 10px;font-size:.75rem}
+}
+
+/* ============================================================
+   รองรับทุกขนาดจอ — คอม / แท็บเล็ต / มือถือ
+   จุดตัด: 1080px = ซ่อนเมนูเป็นปุ่มขีดสามขีด
+           900px  = แท็บเล็ตแนวตั้ง
+           760px  = มือถือแนวนอน / แท็บเล็ตเล็ก
+           480px  = มือถือ
+   ============================================================ */
+
+/* ---- แท็บเล็ต (761–1080px) ---- */
+@media(min-width:761px) and (max-width:1080px){
+  /* จอกว้างพอจะโชว์ปุ่มขอใบเสนอราคาได้ ไม่ต้องซ่อนไปกับเมนู */
+  .nav-cta .btn{display:inline-flex;padding:11px 20px;font-size:.88rem}
+  section{padding:60px 0}
+  .page-hero{padding:58px 0 48px}
+  /* แถบภาพเลื่อนหน้าแรก: พอ intro ยุบเหลือคอลัมน์เดียว ภาพจะสูงเกินครึ่งจอ */
+  .intro-marquee{max-height:340px}
+  .im-item{aspect-ratio:16/9}
+}
+
+/* ---- แท็บเล็ตแนวตั้งลงมา (≤900px) ---- */
+@media(max-width:900px){
+  .intro-marquee{max-height:320px}
+  .im-item{aspect-ratio:16/9}
+  /* ป้ายใต้ตัวเลขเดิมเล็กราว 10px อ่านยากบนจอเล็ก */
+  .stat small{font-size:.72rem;letter-spacing:.08em}
+  .stat{gap:11px}
+}
+
+/* ---- มือถือแนวนอน / แท็บเล็ตเล็ก (≤760px) ---- */
+@media(max-width:760px){
+  section{padding:48px 0}
+  .page-hero{padding:46px 0 38px}
+  .container{padding:0 18px}
+
+  /* แถบตัวเลขสถิติบนปกหน้าแรก — 4 ช่องแคบเกินไป ตัวอักษรเหลือ 10px อ่านไม่ออก */
+  .hero-statbar-bottom{position:relative}
+  .hero-statbar-bottom .grid{grid-template-columns:repeat(2,1fr);padding:16px 0;gap:14px 0}
+  .hero-statbar-bottom .stat:nth-child(2){border-right:0}
+  .hero-statbar-bottom .stat{gap:10px}
+  .hero-bwt{padding-bottom:0}
+
+  .stat b{font-size:1.5rem}
+  svg.ico{width:30px;height:30px}
+
+  .form-card{padding:22px}
+  .foot-grid{gap:26px}
+  .cta-band{text-align:center}
+}
+
+/* ---- มือถือ (≤480px) ---- */
+@media(max-width:480px){
+  section{padding:40px 0}
+  .stat b{font-size:1.35rem}
+  .stat small{font-size:.7rem}
+  .btn{padding:12px 22px;font-size:.9rem}
+  .btn-lg{padding:14px 26px;font-size:.95rem}
+  .form-card{padding:18px}
+  .qr-box{margin:0 auto}
+}
+
+/* ---- ขนาดปุ่มให้กดง่ายด้วยนิ้ว (อย่างน้อย 44px ตามมาตรฐาน) ---- */
+@media(hover:none),(max-width:900px){
+  .socials a{width:44px;height:44px}
+  .nav-menu a{min-height:48px;display:flex;align-items:center}
+  .lang-switch{min-height:40px}
+  .accordion button{min-height:52px}
+}
+
+/* ---- ไม่ให้ iOS ซูมเข้าเองตอนแตะช่องกรอก (ต้องอย่างน้อย 16px) ---- */
+@media(max-width:900px){
+  input,select,textarea{font-size:16px}
 }
