@@ -922,17 +922,18 @@ body.ed-on .port:hover img{transform:none}
   .blog-body{padding:22px}
 }
 
-/* ---------- ปุ่มสลับภาษา TH / EN ---------- */
-.lang-switch{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
-.lang-switch button{
-  background:none;color:var(--muted);font-family:var(--head-en);font-weight:800;
-  font-size:.74rem;letter-spacing:.06em;padding:7px 12px;line-height:1;transition:.2s;
+/* ---------- ปุ่มสลับภาษา (ปุ่มเดียว ลูกโลก + ภาษาที่จะสลับไป) ---------- */
+.lang-switch{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1.5px solid var(--line);border-radius:999px;background:#fff;color:var(--blue-deep);
+  font-family:var(--head-en);font-weight:800;font-size:.78rem;letter-spacing:.06em;
+  padding:8px 15px 8px 12px;line-height:1;transition:.22s cubic-bezier(.22,1,.36,1);
 }
-.lang-switch button:hover{color:var(--blue);background:rgba(6,69,197,.07)}
-.lang-switch button.on{background:var(--blue);color:#fff}
+.lang-switch svg{display:block;color:var(--blue);transition:transform .35s}
+.lang-switch:hover{border-color:var(--blue);color:var(--blue);box-shadow:0 6px 16px rgba(6,69,197,.16)}
+.lang-switch:hover svg{transform:rotate(25deg)}
 /* หน้าแรกหัวเว็บโปร่งใสวางทับรูป จึงต้องมีพื้นให้ปุ่มอ่านออก */
-body.home .site-header:not(.scrolled) .lang-switch{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.9)}
+body.home .site-header:not(.scrolled) .lang-switch{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.92)}
 @media(max-width:1080px){
-  .lang-switch{margin-right:4px}
-  .lang-switch button{padding:8px 11px}
+  .lang-switch{margin-right:2px;padding:8px 13px 8px 10px;font-size:.75rem}
 }

@@ -10,7 +10,12 @@
     facebook: svg('<path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.79 8.44-4.94 8.44-9.94Z"/>'),
     line: svg('<path d="M12 2C6.48 2 2 5.65 2 10.13c0 4.02 3.55 7.38 8.35 8.02.32.07.77.21.88.49.1.25.07.65.03.91l-.14.85c-.04.25-.2.99.87.54s5.76-3.39 7.86-5.81C21.29 13.55 22 11.93 22 10.13 22 5.65 17.52 2 12 2ZM8.08 12.85H6.09a.53.53 0 0 1-.53-.53V8.35c0-.29.24-.53.53-.53s.53.24.53.53v3.44h1.46c.29 0 .53.24.53.53s-.24.53-.53.53Zm2.08-.53c0 .29-.24.53-.53.53a.53.53 0 0 1-.53-.53V8.35c0-.29.24-.53.53-.53s.53.24.53.53v3.97Zm4.78 0c0 .23-.15.43-.36.5a.6.6 0 0 1-.17.03.53.53 0 0 1-.43-.21l-2.04-2.77v2.45c0 .29-.24.53-.53.53a.53.53 0 0 1-.53-.53V8.35c0-.23.15-.43.36-.5a.5.5 0 0 1 .17-.03c.16 0 .32.08.42.21l2.05 2.78V8.35c0-.29.24-.53.53-.53s.53.24.53.53v3.97Zm3.21-2.51c.29 0 .53.24.53.53s-.24.53-.53.53h-1.46v.93h1.46c.29 0 .53.24.53.53s-.24.53-.53.53h-1.99a.53.53 0 0 1-.53-.53V8.35c0-.29.24-.53.53-.53h1.99c.29 0 .53.24.53.53s-.24.53-.53.53h-1.46v.93h1.46Z"/>'),
     tiktok: svg('<path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 1 1 .76-5.06v-3.1a5.66 5.66 0 0 0-.76-.05A5.68 5.68 0 1 0 15.54 15.4V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.29 4.29 0 0 1-3.24-1.48Z"/>'),
-    youtube: svg('<path d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42A2.5 2.5 0 0 0 2.42 7.2 26.2 26.2 0 0 0 2 12a26.2 26.2 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26.2 26.2 0 0 0 22 12a26.2 26.2 0 0 0-.42-4.81ZM10 15.11V8.89L15.2 12 10 15.11Z"/>')
+    youtube: svg('<path d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42A2.5 2.5 0 0 0 2.42 7.2 26.2 26.2 0 0 0 2 12a26.2 26.2 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26.2 26.2 0 0 0 22 12a26.2 26.2 0 0 0-.42-4.81ZM10 15.11V8.89L15.2 12 10 15.11Z"/>'),
+    /* ลูกโลกบนปุ่มเปลี่ยนภาษา — วาดเป็นเส้น ไม่ระบายทึบ */
+    globe: '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false">' +
+      '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/>' +
+      '<path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z"/></svg>'
   };
 
   /* ---------- สลับภาษา ไทย / อังกฤษ ----------
@@ -158,10 +163,11 @@
               ${NAV.map(([h, th]) => `<li><a href="${h}" class="${h === page ? "active" : ""}">${th}</a></li>`).join("")}
             </ul>
             <div class="nav-cta">
-              <div class="lang-switch" role="group" aria-label="เปลี่ยนภาษา / Change language">
-                <button type="button" data-lang="th" class="${getLang() === "th" ? "on" : ""}">TH</button>
-                <button type="button" data-lang="en" class="${getLang() === "en" ? "on" : ""}">EN</button>
-              </div>
+              <button type="button" class="lang-switch" data-lang="${getLang() === "th" ? "en" : "th"}"
+                      title="${getLang() === "th" ? "Switch to English" : "เปลี่ยนเป็นภาษาไทย"}"
+                      aria-label="${getLang() === "th" ? "Switch to English" : "เปลี่ยนเป็นภาษาไทย"}">
+                ${ICON.globe}<span>${getLang() === "th" ? "EN" : "TH"}</span>
+              </button>
               <a class="btn btn-yellow" href="quote.html">ขอใบเสนอราคา <span class="arw">→</span></a>
               <button class="burger" id="burger" aria-label="เปิดเมนู">☰</button>
             </div>
@@ -179,9 +185,8 @@
     const head = document.getElementById("stickyHead");
     addEventListener("scroll", () => head.classList.toggle("scrolled", scrollY > 12), { passive: true });
 
-    host.querySelectorAll(".lang-switch button").forEach(b => {
-      b.addEventListener("click", () => { if (b.dataset.lang !== getLang()) setLang(b.dataset.lang); });
-    });
+    const langBtn = host.querySelector(".lang-switch");
+    if (langBtn) langBtn.addEventListener("click", () => setLang(langBtn.dataset.lang));
   }
 
   function renderFooter() {
