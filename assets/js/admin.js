@@ -169,7 +169,10 @@
         <div class="row one">${fld("บรรทัดที่ 3 (น้ำเงิน)", "hero.l3", h.l3)}</div>
         <div class="row">${fld("ข้อความรอง บรรทัดบน", "hero.sub", h.sub)}${fld("ข้อความรอง บรรทัดล่าง", "hero.sub2", h.sub2 || "")}</div>
         <div class="row">${fld("ข้อความปุ่มหลัก", "hero.ctaText", h.ctaText)}${fld("ลิงก์ปุ่มหลัก", "hero.ctaLink", h.ctaLink)}</div>
-        <div class="row">${fld("ข้อความปุ่มวิดีโอ", "hero.videoText", h.videoText || "")}${fld("ลิงก์วิดีโอแนะนำ (ถ้ามี)", "hero.videoUrl", h.videoUrl || "")}</div>
+        <div class="row">${fld("ข้อความปุ่มวิดีโอ", "hero.videoText", h.videoText || "")}${fld("ลิงก์วิดีโอแนะนำ", "hero.videoUrl", h.videoUrl || "")}</div>
+        <p class="hint">วางลิงก์วิดีโอที่คัดลอกมาได้เลย รองรับ YouTube (รวม Shorts) · Vimeo · Facebook · ไฟล์ .mp4<br>
+          ตัวอย่าง: <code>https://www.youtube.com/watch?v=xxxxxxxxxxx</code> หรือ <code>https://youtu.be/xxxxxxxxxxx</code><br>
+          <b>เว้นว่างไว้ = ซ่อนปุ่ม “ชมวิดีโอแนะนำ” บนหน้าแรก</b></p>
         <div class="row">${fld("ริบบิ้นเหลือง (บน)", "hero.ribbonTop", h.ribbonTop || "")}${fld("ริบบิ้นน้ำเงิน (ล่าง)", "hero.ribbonBottom", h.ribbonBottom || "")}</div>`;
     },
     stats() {

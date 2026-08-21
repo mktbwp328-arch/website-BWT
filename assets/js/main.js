@@ -635,10 +635,52 @@
     });
   }
 
+  /* แปลงลิงก์วิดีโอที่คนทั่วไปคัดลอกมา ให้เป็นลิงก์ที่ฝังเล่นในหน้าเว็บได้
+     รองรับ YouTube (ทุกแบบ รวม Shorts), Vimeo, Facebook และไฟล์วิดีโอโดยตรง */
+  function videoEmbed(url) {
+    const u = String(url || "").trim();
+    if (!u) return null;
+
+    if (/\.(mp4|webm|ogg)(\?|$)/i.test(u)) return { type: "file", src: u };
+
+    let m = u.match(/(?:youtube\.com\/(?:watch\?[^#]*\bv=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/);
+    if (m) return { type: "iframe", src: `https://www.youtube.com/embed/${m[1]}?autoplay=1&rel=0` };
+
+    m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if (m) return { type: "iframe", src: `https://player.vimeo.com/video/${m[1]}?autoplay=1` };
+
+    if (/facebook\.com|fb\.watch/i.test(u))
+      return { type: "iframe", src: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(u)}&autoplay=1` };
+
+    // ลิงก์รูปแบบอื่น ลองฝังตรงๆ (เผื่อเป็นลิงก์ embed ที่เตรียมมาแล้ว)
+    return { type: "iframe", src: u };
+  }
+
   function videoModal() {
     const m = document.getElementById("videoModal"); if (!m) return;
-    document.querySelectorAll("[data-video]").forEach(b => b.addEventListener("click", () => m.classList.add("on")));
-    m.addEventListener("click", e => { if (e.target === m || e.target.classList.contains("close")) m.classList.remove("on"); });
+    const box = m.querySelector(".box");
+    const emptyHtml = box ? box.innerHTML : "";
+    const btns = document.querySelectorAll("[data-video]");
+
+    // ยังไม่ได้ใส่ลิงก์ — ซ่อนปุ่มไปเลย จะได้ไม่กดแล้วเจอหน้าต่างว่าง
+    const v = videoEmbed(S.hero && S.hero.videoUrl);
+    if (!v) { btns.forEach(b => { b.style.display = "none"; }); return; }
+    btns.forEach(b => { b.style.display = ""; });
+
+    const open = () => {
+      if (box) box.innerHTML = v.type === "file"
+        ? `<video src="${esc(v.src)}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain"></video>`
+        : `<iframe src="${esc(v.src)}" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="วิดีโอแนะนำบริษัท BW Training"></iframe>`;
+      m.classList.add("on");
+    };
+    const close = () => {
+      m.classList.remove("on");
+      if (box) box.innerHTML = emptyHtml;   // ถอดตัวเล่นออก เพื่อให้เสียงหยุดจริง
+    };
+
+    btns.forEach(b => b.addEventListener("click", open));
+    m.addEventListener("click", e => { if (e.target === m || e.target.classList.contains("close")) close(); });
+    addEventListener("keydown", e => { if (e.key === "Escape" && m.classList.contains("on")) close(); });
   }
 
   /* ---------- quote / contact form ---------- */
